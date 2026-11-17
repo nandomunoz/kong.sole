@@ -40,6 +40,6 @@
   "unpkg": "./kong.sole.min.js",
   "jsdelivr": "./kong.sole.min.js",
   "scripts": {
-    "build": "terser kong.sole.js --module --compress passes=2,pure_getters=true --mangle toplevel --format 'preamble=\"/*! kong.sole v0.3.0 | MIT */\"' -o kong.sole.min.js"
+    "build": "terser kong.sole.js --module --compress passes=2,pure_getters=true,drop_debugger=false --mangle toplevel --format 'preamble=\"/*! kong.sole v0.3.0 | MIT */\"' -o kong.sole.min.js"
   }
 }

@@ -4,10 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
   <meta name="description" content="kong.sole: make your browser console look good. kong.error(), SVG, base64 images, banners and more. Zero dependencies." />
   <meta property="og:title" content="kong.sole" />
   <meta property="og:description" content="Make your browser console look good. Zero dependencies." />
-  <meta property="og:image" content="./assets/poster.jpg" />
+  <meta property="og:image" content="./assets/banner.jpg" />
   <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAP//AAD//wAA//8AAP7/AAD8fwAAwAcAAMAHAACMYwAADWEAAP//AAD//wAA//8AAP//AAD//wAA" rel="icon" type="image/x-icon" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -28,14 +29,43 @@
       --body: Oswald, "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
       --type: "Courier Prime", "Courier New", monospace;
       --grain: url('./assets/grain.png');
+      /* dark theme (default) */
+      --desk: #1b1613; --bar-ink: #ecdcb6; --logo-accent: #e0624f; --bar-hover: #fff;
+      --frame-shadow: 0 30px 80px -20px #000;
+      --install-bg: #1c1816; --install-ink: #ecdcb6;
+      --con-bg: #1e1e1e; --con-bar: #292929; --con-bar-line: #3a3a3a; --con-text: #e8e8e8; --con-title: #aaa;
+      --con-btn-bg: #3a3a3a; --con-btn-ink: #ddd; --con-btn-hover: #4a4a4a; --con-line: rgba(255, 255, 255, .04);
+      --con-warn-bg: rgba(255, 190, 0, .1); --con-warn-edge: #ffbe00; --con-err-bg: rgba(255, 60, 60, .12); --con-err-edge: #ff4d4d;
+      --con-obj: #9cdcfe; --con-foot-bg: #242424; --con-foot-ink: #888;
+      --kbd-bg: #333; --kbd-edge: #555; --kbd-ink: #ddd;
     }
+
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme="dark"]) { color-scheme: light; --desk: #efe6d6; --bar-ink: #1f1b18; --logo-accent: #b4332c; --bar-hover: #000;
+      --frame-shadow: 0 24px 60px -24px rgba(60, 40, 20, .55);
+      --install-bg: #e6d6b3; --install-ink: #1f1b18;
+      --con-bg: #ffffff; --con-bar: #f1f3f4; --con-bar-line: #dadce0; --con-text: #202124; --con-title: #5f6368;
+      --con-btn-bg: #e8eaed; --con-btn-ink: #3c4043; --con-btn-hover: #dadce0; --con-line: rgba(0, 0, 0, .08);
+      --con-warn-bg: #fffbe5; --con-warn-edge: #f4bd00; --con-err-bg: #fff0f0; --con-err-edge: #d93025;
+      --con-obj: #1a73e8; --con-foot-bg: #f8f9fa; --con-foot-ink: #5f6368;
+      --kbd-bg: #e8eaed; --kbd-edge: #bdc1c6; --kbd-ink: #3c4043; }
+    }
+    :root[data-theme="light"] { color-scheme: light; --desk: #efe6d6; --bar-ink: #1f1b18; --logo-accent: #b4332c; --bar-hover: #000;
+      --frame-shadow: 0 24px 60px -24px rgba(60, 40, 20, .55);
+      --install-bg: #e6d6b3; --install-ink: #1f1b18;
+      --con-bg: #ffffff; --con-bar: #f1f3f4; --con-bar-line: #dadce0; --con-text: #202124; --con-title: #5f6368;
+      --con-btn-bg: #e8eaed; --con-btn-ink: #3c4043; --con-btn-hover: #dadce0; --con-line: rgba(0, 0, 0, .08);
+      --con-warn-bg: #fffbe5; --con-warn-edge: #f4bd00; --con-err-bg: #fff0f0; --con-err-edge: #d93025;
+      --con-obj: #1a73e8; --con-foot-bg: #f8f9fa; --con-foot-ink: #5f6368;
+      --kbd-bg: #e8eaed; --kbd-edge: #bdc1c6; --kbd-ink: #3c4043; }
+    :root[data-theme="dark"] { color-scheme: dark; }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-    body { font-family: var(--body); font-weight: 300; line-height: 1.6; color: var(--ink); background: #1b1613; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    body { font-family: var(--body); font-weight: 300; line-height: 1.6; color: var(--ink); background: var(--desk); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
     a { color: inherit; }
     code { font-family: var(--type); font-size: .92em; }
-    kbd { font-family: var(--type); background: #333; border: 1px solid #555; border-radius: 3px; padding: 0 5px; color: #ddd; font-size: .8em; }
+    kbd { font-family: var(--type); background: var(--kbd-bg); border: 1px solid var(--kbd-edge); border-radius: 3px; padding: 0 5px; color: var(--kbd-ink); font-size: .8em; }
     .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
 
     /* Paper */
@@ -49,16 +79,25 @@
     .stripes { height: 14px; background: repeating-linear-gradient(135deg, var(--ink) 0 14px, var(--red) 14px 28px, var(--cream) 28px 42px); }
 
     /* ---------- Top bar ---------- */
-    .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 32px; padding: 18px 0; color: var(--cream); }
+    .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 32px; padding: 18px 0; color: var(--bar-ink); }
     .logo { font-family: var(--display); font-size: 1.7rem; letter-spacing: .06em; text-decoration: none; }
-    .logo span { color: #e0624f; }
+    .logo span { color: var(--logo-accent); }
     .bar nav { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: .85rem; letter-spacing: .16em; text-transform: uppercase; }
     .bar nav a { text-decoration: none; opacity: .85; }
-    .bar nav a:hover { opacity: 1; color: #fff; }
+    .bar nav a:hover { opacity: 1; color: var(--bar-hover); }
+    .theme { padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; opacity: .85; cursor: pointer; }
+    .theme:hover { opacity: 1; color: var(--bar-hover); }
+    .theme:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
 
     /* ---------- Hero poster ---------- */
     .hero { padding: 6px 0 70px; }
-    .frame { width: min(100%, 780px); margin: 0 auto; padding: 14px; background: var(--sheet); box-shadow: 0 30px 80px -20px #000, 0 0 0 1px rgba(255, 255, 255, .06); }
+    .frame {
+      /* Fit the poster to the window: never wider than 780px, never taller than the space under the top bar.
+         Poster ratio is 700:950, the frame adds 14px of border on each side, the bar takes about 118px. */
+      --fit: calc((100vh - 118px) * 0.7368 + 28px);
+      width: min(100%, max(300px, min(780px, var(--fit))));
+      margin: 0 auto; padding: 14px; background: var(--sheet); box-shadow: var(--frame-shadow), 0 0 0 1px rgba(128, 128, 128, .12); }
+    @supports (height: 100svh) { .frame { --fit: calc((100svh - 118px) * 0.7368 + 28px); } }
     .poster { position: relative; container-type: inline-size; aspect-ratio: 700 / 950; overflow: hidden; }
     .poster .art { position: absolute; inset: 0; width: 100%; height: 100%; }
     .poster > :not(.art) { position: absolute; }
@@ -73,6 +112,24 @@
     .cta:hover { background: var(--ink); color: var(--cream); }
     .cta:focus-visible, .btn:focus-visible, .tab:focus-visible, .copy:focus-visible, .bar a:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
     .poster .credit { font-family: var(--display); fill: var(--cream); text-transform: uppercase; }
+
+    .poster .art.land { display: none; }
+    @media (min-width: 820px) {
+      /* Desktop: a landscape 16:9 poster that still fits the window height (bar + padding take about 146px). */
+      .frame { --fit: calc((100vh - 146px) * 1.7778 + 28px); width: min(100%, max(520px, min(1240px, var(--fit)))); }
+      @supports (height: 100svh) { .frame { --fit: calc((100svh - 146px) * 1.7778 + 28px); } }
+      .poster { aspect-ratio: 16 / 9; }
+      .poster .art.port { display: none; }
+      .poster .art.land { display: block; }
+      .poster h1 { left: 5cqw; top: 3.5cqw; font-size: 12.5cqw; }
+      .poster h1 span { padding-left: 4cqw; }
+      .tagline { right: 5cqw; top: 5cqw; width: 30cqw; font-size: 3.6cqw; }
+      .starring { left: 6cqw; top: 27cqw; }
+      .starring small { font-size: 1.15cqw; margin-bottom: .8cqw; }
+      .starring b { font-size: 4.1cqw; }
+      .starring i { font-size: 1.35cqw; margin: -.2cqw 0 1.5cqw; }
+      .cta { left: auto; right: 5cqw; bottom: auto; top: 26.5cqw; padding: .9cqw 2.2cqw; border-width: .3cqw; font-size: 2.3cqw; }
+    }
 
     /* ---------- Section frame ---------- */
     section { padding: 84px 0; }
@@ -95,6 +152,14 @@
     #playground { background: var(--grain), radial-gradient(90% 70% at 50% 0%, #c0443a, var(--red) 55%, #8f2620); color: var(--cream); }
     #playground .head small { color: #f0b9a8; }
     .peak { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+    .modes { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-bottom: 16px; border: 3px solid var(--cream); }
+    .mode { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; padding: 8px 14px 9px; border: 0; background: transparent; color: var(--cream); text-align: left; cursor: pointer; transition: background .15s, color .15s; }
+    .mode + .mode { border-left: 3px solid var(--cream); }
+    .mode b { font-family: var(--display); font-weight: 400; font-size: 1.5rem; line-height: 1; letter-spacing: .06em; text-transform: uppercase; }
+    .mode span { font-family: var(--body); font-weight: 400; font-size: .78rem; letter-spacing: .04em; opacity: .85; }
+    .mode:hover { background: rgba(236, 220, 182, .16); }
+    .mode[aria-selected="true"] { background: var(--cream); color: var(--ink); }
+    .mode:focus-visible { outline: 3px solid var(--ink); outline-offset: -6px; }
     .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
     .tab { border: 2px solid var(--cream); background: transparent; color: var(--cream); padding: 3px 14px; font-family: var(--display); font-size: 1.05rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: all .15s; }
     .tab:hover { background: rgba(236, 220, 182, .18); }
@@ -109,21 +174,21 @@
     .btn.small { background: var(--red); color: var(--cream); }
     .btn.small:hover { background: var(--ink); }
 
-    .console { border: 3px solid var(--ink); background: #1e1e1e; box-shadow: 8px 8px 0 var(--ink); color: #e8e8e8; }
-    .console-bar { display: flex; align-items: center; gap: 8px; padding: 9px 14px; background: #292929; border-bottom: 1px solid #3a3a3a; }
+    .console { border: 3px solid var(--ink); background: var(--con-bg); box-shadow: 8px 8px 0 var(--ink); color: var(--con-text); }
+    .console-bar { display: flex; align-items: center; gap: 8px; padding: 9px 14px; background: var(--con-bar); border-bottom: 1px solid var(--con-bar-line); }
     .dots { display: flex; gap: 6px; }
     .dots i { width: 10px; height: 10px; border-radius: 50%; }
     .dots i:nth-child(1) { background: #ff5f57; } .dots i:nth-child(2) { background: #febc2e; } .dots i:nth-child(3) { background: #28c840; }
-    .console-title { margin-left: 6px; color: #aaa; font-size: .75rem; font-family: ui-monospace, Menlo, Consolas, monospace; }
+    .console-title { margin-left: 6px; color: var(--con-title); font-size: .75rem; font-family: ui-monospace, Menlo, Consolas, monospace; }
     .console-actions { margin-left: auto; display: flex; gap: 6px; }
-    .console-actions button { background: #3a3a3a; border: 0; color: #ddd; padding: 3px 10px; font: inherit; font-size: .72rem; cursor: pointer; }
-    .console-actions button:hover { background: #4a4a4a; }
+    .console-actions button { background: var(--con-btn-bg); border: 0; color: var(--con-btn-ink); padding: 3px 10px; font: inherit; font-size: .72rem; cursor: pointer; }
+    .console-actions button:hover { background: var(--con-btn-hover); }
     .console-body { height: 380px; overflow-y: auto; padding: 8px 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.5; font-weight: 400; }
-    .line { overflow: hidden; padding: 2px 14px; white-space: pre-wrap; word-break: break-word; border-bottom: 1px solid rgba(255, 255, 255, .04); }
-    .line.warn { background: rgba(255, 190, 0, .1); border-left: 3px solid #ffbe00; }
-    .line.error { background: rgba(255, 60, 60, .12); border-left: 3px solid #ff4d4d; }
-    .line .obj { color: #9cdcfe; }
-    .console-foot { padding: 7px 14px; border-top: 1px solid #3a3a3a; background: #242424; color: #888; font-size: .72rem; }
+    .line { overflow: hidden; padding: 2px 14px; white-space: pre-wrap; word-break: break-word; border-bottom: 1px solid var(--con-line); }
+    .line.warn { background: var(--con-warn-bg); border-left: 3px solid var(--con-warn-edge); }
+    .line.error { background: var(--con-err-bg); border-left: 3px solid var(--con-err-edge); }
+    .line .obj { color: var(--con-obj); }
+    .console-foot { padding: 7px 14px; border-top: 1px solid var(--con-bar-line); background: var(--con-foot-bg); color: var(--con-foot-ink); font-size: .72rem; }
 
     .stats { display: flex; justify-content: center; margin-top: 64px; }
     .stat { padding: 0 clamp(18px, 5vw, 56px); text-align: center; border-left: 2px solid rgba(236, 220, 182, .5); }
@@ -132,8 +197,8 @@
     .stat span { font-weight: 500; font-size: .8rem; letter-spacing: .22em; text-transform: uppercase; }
 
     /* ---------- Install ---------- */
-    #start { background: #1c1816; color: var(--cream); text-align: center; }
-    #start .head small { color: #e0624f; }
+    #start { background: var(--install-bg); color: var(--install-ink); text-align: center; }
+    #start .head small { color: var(--logo-accent); }
     #start .install { max-width: 740px; margin: 0 auto; text-align: left; box-shadow: 8px 8px 0 var(--red); }
     .roll { margin-top: 48px; font-family: var(--display); letter-spacing: .12em; font-size: 1.1rem; text-transform: uppercase; opacity: .8; }
 
@@ -172,6 +237,7 @@
         <a href="#playground">The show</a>
         <a href="#start">Install</a>
         <a href="https://github.com/nandovejer/console.cool" target="_blank" rel="noopener">GitHub</a>
+        <button class="theme" type="button" id="theme" aria-label="Color theme">Theme: auto</button>
       </nav>
     </div>
   </div>
@@ -180,7 +246,7 @@
   <header class="hero" id="top">
     <div class="frame">
       <div class="poster paper">
-        <svg class="art" viewBox="0 0 700 950" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <svg class="art port" viewBox="0 0 700 950" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           <defs>
             <path id="cur" d="M0 0 L0 22 L5.5 17 L9.5 26 L13.5 24 L9.5 15 L17 15Z" />
           </defs>
@@ -210,6 +276,35 @@
           </g>
         </svg>
 
+        <svg class="art land" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs><path id="cur2" d="M0 0 L0 22 L5.5 17 L9.5 26 L13.5 24 L9.5 15 L17 15Z" /></defs>
+          <!-- beam leaning down-left from the tower -->
+          <polygon fill="#b4332c" points="932,512 1168,512 1100,900 560,900" />
+          <polygon fill="#8f2620" points="560,900 830,660 900,900" />
+          <!-- deco tower (same shape as the portrait one, scaled up) -->
+          <g transform="translate(1050 520) scale(2) translate(-425 -430)">
+            <path fill="#b4332c" d="M425 232 L431 298 H448 V334 H466 V390 H484 V430 H366 V390 H384 V334 H402 V298 H419Z" />
+          </g>
+          <!-- console window silhouette -->
+          <g transform="rotate(-8 1005 710)">
+            <rect x="900" y="640" width="210" height="140" rx="12" fill="#ecdcb6" />
+            <rect x="900" y="640" width="210" height="28" rx="12" fill="#d6ba88" />
+            <circle cx="920" cy="654" r="5.5" fill="#b4332c" /><circle cx="940" cy="654" r="5.5" fill="#b4332c" /><circle cx="960" cy="654" r="5.5" fill="#b4332c" />
+            <text x="920" y="742" font-size="60" fill="#b4332c" font-family="Staatliches, Impact, sans-serif">&gt;_</text>
+          </g>
+          <!-- flying cursors -->
+          <use href="#cur2" fill="#7a1f1a" transform="translate(690 250) rotate(22) scale(2.6)" />
+          <use href="#cur2" fill="#7a1f1a" transform="translate(1215 330) rotate(-28) scale(2.3)" />
+          <use href="#cur2" fill="#7a1f1a" transform="translate(440 820) rotate(42) scale(2.8)" />
+          <!-- black slab with the credits -->
+          <path fill="#1f1b18" d="M1480 548 L1508 604 L1500 872 L1180 872 L1204 690 L1370 640 L1420 580Z" />
+          <g transform="translate(1322 850) rotate(-50)">
+            <text class="credit" x="0" y="-4" font-size="15" letter-spacing="1">A zero-dependency</text>
+            <text class="credit" x="0" y="-36" font-size="34" letter-spacing="1">Production</text>
+            <text class="credit" x="0" y="-72" font-size="14" letter-spacing="1">From an idea by</text>
+            <text class="credit" x="0" y="-100" font-size="25" letter-spacing="1">Nando Muñoz</text>
+          </g>
+        </svg>
         <h1>Kong<span>Sole</span></h1>
         <div class="tagline">Make your<br>browser<br>console<br>look good</div>
         <div class="starring">
@@ -250,7 +345,11 @@
       <p class="intro">Pick a recipe and press run. Each example executes the exact code shown and prints the result in the console and in your DevTools.</p>
       <div class="peak">
         <div>
-          <div class="tabs" role="tablist" id="tabs"></div>
+          <div class="modes" role="tablist" aria-label="Style of examples">
+            <button class="mode" type="button" role="tab" data-mode="pro" aria-selected="true"><b>Professional</b><span>Clear, spaced, made for real logs</span></button>
+            <button class="mode" type="button" role="tab" data-mode="cool" aria-selected="false"><b>Cool</b><span>ASCII art, animation and fun</span></button>
+          </div>
+          <div class="tabs" role="tablist" id="tabs" aria-label="Examples"></div>
           <div class="play">
             <div class="play-head">
               <p id="play-desc"></p>
@@ -278,7 +377,7 @@
       <div class="stats">
         <div class="stat"><b>0</b><span>Dependencies</span></div>
         <div class="stat"><b>1</b><span>File</span></div>
-        <div class="stat"><b>5.3kb</b><span>Minified + gzip</span></div>
+        <div class="stat"><b>14.3kb</b><span>Minified + gzip</span></div>
       </div>
     </div>
   </section>
@@ -296,7 +395,7 @@
           <button class="copy" type="button" data-copy="#install-code">Copy</button>
         </div>
         <pre><code id="install-code"><span class="c">// 1. Import</span>
-import kong from 'https://cdn.jsdelivr.net/gh/nandovejer/console.cool/kong.sole.min.js';
+import kong from 'https://cdn.jsdelivr.net/gh/nandovejer/console.cool@0.3.0/kong.sole.min.js';
 
 <span class="c">// 2. Log with style</span>
 kong.success('It works!');
@@ -373,37 +472,59 @@ kong.enabled = false;</code></pre>
     const origGroupEnd = console.groupEnd.bind(console);
     console.group = (...args) => { origGroup(...args); addLine('log', args); depth++; };
     console.groupEnd = () => { origGroupEnd(); depth = Math.max(0, depth - 1); };
+    const origCollapsed = console.groupCollapsed.bind(console);
+    console.groupCollapsed = (...args) => { origCollapsed(...args); addLine('log', args); depth++; };
+    const origClear = console.clear.bind(console);
+    console.clear = () => { origClear(); out.textContent = ''; depth = 0; };
 
     /* ---------- Recipes (the code shown is the code executed) ---------- */
     const RECIPES = [
-      { id: 'status', label: 'Status', desc: 'Four severity levels with badges and icons.',
-        code: "kong.success('Saved!');\nkong.info('Fetching users...', { page: 1 });\nkong.warning('Deprecated option');\nkong.error('Request failed');" },
-      { id: 'text', label: 'Text', desc: 'Make important messages impossible to miss.',
-        code: "kong.gradient('kong.gradient()');\nkong.rainbow('kong.rainbow()');\nkong.neon('kong.neon()');\nkong.box('Release 1.0\\nShip it!');" },
-      { id: 'svg', label: 'SVG', desc: 'Draw vector graphics right in the console.',
-        code: "kong.logo();\n\nkong.svg(`<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\">\n  <circle cx=\"60\" cy=\"60\" r=\"50\" fill=\"#E21143\"/>\n  <circle cx=\"60\" cy=\"60\" r=\"28\" fill=\"#FFB03A\"/>\n</svg>`);" },
-      { id: 'banner', label: 'Banners', desc: 'Big titles: an SVG banner, block letters and a progress bar.',
-        code: "kong.banner('kong.sole', { subtitle: 'make your console look good' });\nkong.banner('LAUNCH', { from: '#00e5ff', to: '#b400ff', size: 44 });\nkong.ascii('KONG');\nkong.progress(72, { label: 'build' });" },
-      { id: 'image', label: 'Base64', desc: 'Paste any image as base64, a data URI, a URL, SVG markup or a File.',
+      { group: "pro", id: "startup", label: "Startup", desc: "A boot sequence a teammate can read at a glance.",
+        code: "kong.splash('ACME', {\n  tagline: 'Payments API',\n  info: { Version: '2.4.1', Environment: 'production', Region: 'eu-west-1', Build: 'a9f3c21' },\n});\n\nkong.card('Service ready', {\n  Listening: 'http://localhost:3000',\n  Database: 'postgres  12 ms',\n  Cache: 'redis  2 ms',\n  Workers: '4 of 4 online',\n}, { status: 'ok', subtitle: 'All health checks passed' });" },
+      { group: "pro", id: "banners", label: "Banners", desc: "Clear titles with room to breathe.",
+        code: "kong.banner('acme-api', {\n  subtitle: 'Payments service  v2.4.1',\n  from: '#38bdf8', to: '#818cf8',\n});\n\nkong.banner('DEPLOY OK', {\n  subtitle: 'production  eu-west-1  3.2 s',\n  from: '#22c55e', to: '#14b8a6', size: 44,\n});" },
+      { group: "pro", id: "logs", label: "Logs", desc: "Severity levels with real, readable messages.",
+        code: "kong.success('Connected to postgres', { host: 'db.internal', latency: '12 ms' });\nkong.info('Listening on :3000');\nkong.warning('Cache miss ratio 38%, threshold is 30%');\nkong.error('Payment webhook failed: timeout after 5000 ms', { orderId: 'ord_8f2a' });" },
+      { group: "pro", id: "steps", label: "Steps", desc: "A checklist that shows progress and timings.",
+        code: "kong.divider('Boot sequence');\nkong.steps([\n  ['Connect database', 'done', '12 ms'],\n  ['Run migrations', 'done', '3 applied'],\n  ['Warm cache', 'running'],\n  ['Start workers', 'pending'],\n]);" },
+      { group: "pro", id: "metrics", label: "Metrics", desc: "A mini dashboard: tiles, a sparkline and bars.",
+        code: "kong.stats({\n  'p95 latency': { value: '184 ms', delta: '-12%', good: true },\n  'Error rate': { value: '0.12%', delta: '+0.03%', good: false },\n  Throughput: { value: '1.2k/s', delta: '+8%', good: true },\n});\n\nkong.spark([3, 5, 4, 8, 6, 9, 12, 10], { label: 'req/s', unit: 'k' });\nkong.bar({ api: 62, worker: 24, cron: 14 });" },
+      { group: "pro", id: "debug", label: "Debug", desc: "Structured data you can scan instead of squint at.",
+        code: "kong.json({\n  order: 'ord_8f2a', total: 129.9, currency: 'EUR',\n  items: [{ sku: 'KB-01', qty: 2 }], paid: true, refund: null,\n});\n\nkong.diff({ plan: 'free', seats: 3 }, { plan: 'pro', seats: 3, trial: true });" },
+      { group: "pro", id: "groups", label: "Groups", desc: "Folded groups, one command to close them all, timers that react to slow code.",
+        code: "kong.section('Checkout', () => {\n  kong.info('Validating cart');\n  kong.measure('Fetch prices', () => 1 + 1);\n  kong.measure('Charge card', () => {\n    const end = performance.now() + 150;\n    while (performance.now() < end) {}\n  });\n});\n\nkong.section('Details (folded)', () => {\n  kong.info('Open me in the DevTools');\n}, { collapsed: true });\n\nkong.closeAll(); // closes any group still open" },
+      { group: "pro", id: "inspect", label: "Inspect", desc: "Everything about an object, with types and sizes. Filter by name or type.",
+        code: "const user = {\n  id: 42, name: 'Ada Lovelace', email: 'ada@acme.dev',\n  roles: ['admin', 'editor'], active: true, lastLogin: null,\n  profile: { city: 'London', joined: new Date('2024-03-01') },\n};\n\nkong.object(user, { label: 'user' });\nkong.dir(user, { type: 'string' });   // only the string properties\nkong.type(user.roles, 'roles');       // precise type, also returned" },
+      { group: "pro", id: "table", label: "Table", desc: "Nested objects flattened into columns, with a quick search.",
+        code: "const orders = [\n  { id: 'ord_1', customer: { name: 'Ada', tier: 'pro' }, total: 129.9, status: 'paid' },\n  { id: 'ord_2', customer: { name: 'Bob', tier: 'free' }, total: 9, status: 'open' },\n  { id: 'ord_3', customer: { name: 'Eve', tier: 'pro' }, total: 54.5, status: 'paid' },\n];\n\nkong.table(orders);\nkong.table(orders, { search: 'pro' });   // quick filter" },
+      { group: "pro", id: "changes", label: "Changes", desc: "Freeze a moment, watch a property, see exactly what changed.",
+        code: "const cart = { items: 1, total: 19.9 };\nconst before = kong.snapshot(cart, 'cart before');\n\nconst stop = kong.watch(cart, 'total', { label: 'cart' });\ncart.items = 3;\ncart.total = 59.7;\nstop();\n\nkong.diff(before, cart);\nkong.log({ a: { b: { c: { d: 1 } } } }, { depth: 2, label: 'deep object' });" },
+      { group: "pro", id: "channels", label: "Channels", desc: "Named loggers you can mute, solo or clear without losing errors.",
+        code: "const auth = kong.tag('auth');\nconst db = kong.tag('db');\n\nauth.info('Login ok', { user: 'ada' });\ndb.warn('Slow query: 480 ms');\nauth.error('Token expired');\n\nkong.mute('db');\ndb.info('This line is hidden');\nkong.unmute('db');\n\nkong.once('Config loaded');\nkong.once('Config loaded');   // printed only once\n\nkong.clear('auth');           // removes auth lines, errors stay" },
+      { group: "pro", id: "timing", label: "Timing", desc: "Timers with min, average and max. A runaway-loop guard. Assertions and clean stacks.",
+        code: "const wait = (ms) => { const end = performance.now() + ms; while (performance.now() < end) {} };\n\nfor (let i = 0; i < 3; i++) {\n  kong.time('render');\n  wait(20 + i * 15);\n  kong.timeEnd('render');          // returns the milliseconds\n}\nkong.timers();                     // runs, min, avg, max, total\n\nfor (let i = 0; i < 6; i++) kong.count('retry', { max: 3 });\n\nkong.assert(1 + 1 === 3, 'Math is broken');   // add { pause: true } to stop in the debugger\nkong.trace('who called me?', { hide: ['node_modules'] });" },
+      { group: "pro", id: "charts", label: "Charts", desc: "Line and bar charts, the date, and a copy to clipboard.",
+        code: "kong.date();\n\nkong.chart([12, 18, 9, 22, 30, 26, 41], { type: 'line', title: 'Signups per day', color: '#38bdf8' });\nkong.chart({ Mon: 12, Tue: 18, Wed: 9, Thu: 22, Fri: 30 }, { type: 'bar', title: 'Orders' });\n\nkong.copy({ build: 'a9f3c21', env: 'production' });" },
+      { group: "cool", id: "ascii", label: "ASCII art", desc: "Block letters that work in every browser and in Node.",
+        code: "kong.ascii('KONG');\n\nkong.splash('SHIP IT', {\n  tagline: 'Friday deploys are a lifestyle',\n  info: { Status: 'green', Coverage: '94%' },\n  from: '#22c55e', to: '#38bdf8',\n});" },
+      { group: "cool", id: "animated", label: "Animated", desc: "Moving titles, loaders and any animated SVG or GIF.",
+        code: "kong.aurora('kong.sole', { subtitle: 'make your console look good' });\n\nkong.loader('Deploying to production');\n\nkong.anima('<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"96\" height=\"96\"><circle cx=\"48\" cy=\"48\" r=\"10\" fill=\"#E21143\"><animate attributeName=\"r\" values=\"10;40;10\" dur=\"2s\" repeatCount=\"indefinite\"/><animate attributeName=\"opacity\" values=\"1;.1;1\" dur=\"2s\" repeatCount=\"indefinite\"/></circle></svg>');" },
+      { group: "cool", id: "matrix", label: "Matrix", desc: "Matrix rain with a word formed by the drops.",
+        code: "kong.matrix('KONG');\nkong.matrix('SHIP IT', { color: '#38bdf8', width: 360, height: 160 });" },
+      { group: "cool", id: "image", label: "Images", desc: "Paste any image as base64, a data URI, a URL, SVG markup or a File.",
         code: "const svg = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"96\" height=\"96\"><rect width=\"96\" height=\"96\" rx=\"20\" fill=\"#E21143\"/><circle cx=\"48\" cy=\"48\" r=\"22\" fill=\"#FFB03A\"/></svg>';\nconst b64 = kong.encode(svg); // raw base64 string\n\nkong.image(b64);\n// kong.image('data:image/png;base64,...')\n// kong.image('./photo.jpg', { width: 200 })\n// kong.image(fileInput.files[0])" },
-      { id: 'say', label: 'Characters', desc: 'ASCII friends with something to say.',
-        code: "kong.say('You shall not pass!', 'wizard');\nkong.say('Meow. Tests are green.', 'cat');\nkong.say('Beep boop.', 'robot');" },
-      { id: 'debug', label: 'Debug', desc: 'Badges, charts and structured data at a glance.',
-        code: "kong.badge('build', 'passing');\nkong.badge('coverage', '72%', '#facc15');\nkong.bar({ js: 70, css: 20, html: 10 });\nkong.spark([1, 5, 3, 8, 2, 9, 4]);\nkong.json({ name: 'cool', stars: 42, tags: ['log', 'svg'], parent: null });\nkong.diff({ a: 1, b: 2 }, { a: 1, b: 3 });" },
-      { id: 'group', label: 'Groups', desc: 'Styled groups and timers that react to slow code.',
-        code: "kong.section('Checkout', () => {\n  kong.info('Validating cart');\n  kong.measure('fast task', () => 1 + 1);\n  kong.measure('slow task', () => {\n    const end = performance.now() + 150;\n    while (performance.now() < end) {}\n  });\n});" },
-      { id: 'format', label: 'Format', desc: 'The classics: bold, italic, colors and headings.',
-        code: "kong.h1('kong.h1()');\nkong.h2('kong.h2()');\nkong.bold('kong.bold()');\nkong.italic('kong.italic()');\nkong.underline('kong.underline()');\nkong.red('kong.red()');\nkong.green('kong.green()');" },
-      { id: 'nerd', label: 'Nerd', desc: 'Because debugging should be fun.',
-        code: "kong.poo('kong.poo()');\nkong.gandalf('kong.gandalf()');\nkong.wonderwoman('kong.wonderwoman()');" },
+      { group: "cool", id: "say", label: "Characters", desc: "A friendly ASCII voice for the good news.",
+        code: "kong.say('Build passed. Shipping to production.', 'robot');" },
     ];
 
     const run = (r) => new Function('kong', r.code)(kong);
-    let current = RECIPES[0];
+    let mode = 'pro';
+    let current = RECIPES.find((r) => r.group === mode);
 
     const tabs = document.getElementById('tabs');
     const codeEl = document.getElementById('play-code');
     const descEl = document.getElementById('play-desc');
+    const modes = [...document.querySelectorAll('.mode')];
 
     function select(r) {
       current = r;
@@ -412,21 +533,48 @@ kong.enabled = false;</code></pre>
       tabs.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.id === r.id)));
     }
 
-    RECIPES.forEach((r) => {
-      const b = document.createElement('button');
-      b.className = 'tab';
-      b.type = 'button';
-      b.setAttribute('role', 'tab');
-      b.dataset.id = r.id;
-      b.textContent = r.label;
-      b.onclick = () => select(r);
-      tabs.appendChild(b);
-    });
-    select(RECIPES[0]);
+    // Show only the examples of one style and select the first of them.
+    function setMode(next) {
+      mode = next;
+      modes.forEach((m) => m.setAttribute('aria-selected', String(m.dataset.mode === next)));
+      tabs.textContent = '';
+      RECIPES.filter((r) => r.group === next).forEach((r) => {
+        const b = document.createElement('button');
+        b.className = 'tab';
+        b.type = 'button';
+        b.setAttribute('role', 'tab');
+        b.dataset.id = r.id;
+        b.textContent = r.label;
+        b.onclick = () => select(r);
+        tabs.appendChild(b);
+      });
+      select(RECIPES.find((r) => r.group === next));
+    }
+    modes.forEach((m) => m.addEventListener('click', () => setMode(m.dataset.mode)));
+    setMode('pro');
 
     document.getElementById('play-run').onclick = () => run(current);
-    document.getElementById('run-all').onclick = () => { out.textContent = ''; depth = 0; RECIPES.forEach(run); };
+    document.getElementById('run-all').onclick = () => { out.textContent = ''; depth = 0; RECIPES.filter((r) => r.group === mode).forEach(run); };
     document.getElementById('clear').onclick = () => { out.textContent = ''; depth = 0; };
+
+    /* ---------- Theme: auto, dark or light ---------- */
+    const themeBtn = document.getElementById('theme');
+    const THEMES = ['auto', 'dark', 'light'];
+    let themeChoice = 'auto';
+    try { themeChoice = localStorage.getItem('kong-theme') || 'auto'; } catch { /* storage blocked */ }
+    function applyTheme(choice) {
+      themeChoice = THEMES.includes(choice) ? choice : 'auto';
+      if (themeChoice === 'auto') document.documentElement.removeAttribute('data-theme');
+      else document.documentElement.dataset.theme = themeChoice;
+      kong.theme = themeChoice; // the console output follows the same choice
+      themeBtn.textContent = 'Theme: ' + themeChoice;
+      try { localStorage.setItem('kong-theme', themeChoice); } catch { /* storage blocked */ }
+    }
+    // Lines already printed keep their colors, so print the example again in the new theme.
+    const refresh = () => { out.textContent = ''; depth = 0; run(current); };
+    themeBtn.onclick = () => { applyTheme(THEMES[(THEMES.indexOf(themeChoice) + 1) % THEMES.length]); refresh(); };
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { if (themeChoice === 'auto') refresh(); });
+    applyTheme(themeChoice);
 
     /* ---------- Copy buttons ---------- */
     async function copy(btn, text) {
