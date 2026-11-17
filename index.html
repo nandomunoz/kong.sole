@@ -14,6 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Oswald:wght@300;400;500&family=Staatliches&display=swap" media="print" onload="this.media='all'" />
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Oswald:wght@300;400;500&family=Staatliches&display=swap" /></noscript>
+  <link rel="stylesheet" href="./assets/luz-tokens.min.css" />
   <link rel="modulepreload" href="./kong.sole.min.js" />
   <link rel="preload" href="./assets/grain.png" as="image" />
   <title>kong.sole: make your console look good</title>
@@ -29,35 +30,45 @@
       --body: Oswald, "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
       --type: "Courier Prime", "Courier New", monospace;
       --grain: url('./assets/grain.png');
-      /* dark theme (default) */
-      --desk: #1b1613; --bar-ink: #ecdcb6; --logo-accent: #e0624f; --bar-hover: #fff;
+      /* Surfaces, text, dividers, status colors and spacing come from the LUZ design tokens
+         (only the tokens: ./assets/luz-tokens.min.css, vendored from @luz-ds/tokens).
+         They follow data-theme on <html> (light, dark, high-contrast), or the system when it is not set.
+         The second value of each var() is a fallback in case the file does not load. */
+      --desk: var(--luz-surface-page, #1b1613);
+      --bar-ink: var(--luz-text-primary, #ecdcb6);
+      --bar-hover: var(--luz-text-primary, #fff);
+      --install-bg: var(--luz-surface-strong, #1c1816);
+      --install-ink: var(--luz-text-primary, #ecdcb6);
+      --focus: var(--luz-focus-ring, #6fb1ec);
+      /* the preview console */
+      --con-bg: var(--luz-surface, #1e1e1e);
+      --con-bar: var(--luz-surface-strong, #292929);
+      --con-bar-line: var(--luz-divider, #3a3a3a);
+      --con-text: var(--luz-text-primary, #e8e8e8);
+      --con-title: var(--luz-text-secondary, #aaa);
+      --con-btn-bg: var(--luz-surface, #3a3a3a);
+      --con-btn-ink: var(--luz-text-primary, #ddd);
+      --con-btn-hover: var(--luz-surface-hover, #4a4a4a);
+      --con-line: var(--luz-divider, rgba(255, 255, 255, .04));
+      --con-warn-bg: var(--luz-color-warning-bg, rgba(255, 190, 0, .1));
+      --con-warn-edge: var(--luz-color-warning-accent, #ffbe00);
+      --con-err-bg: var(--luz-color-danger-bg, rgba(255, 60, 60, .12));
+      --con-err-edge: var(--luz-color-danger, #ff4d4d);
+      --con-obj: var(--luz-color-info, #9cdcfe);
+      --con-foot-bg: var(--luz-surface-muted, #242424);
+      --con-foot-ink: var(--luz-text-muted, #888);
+      --kbd-bg: var(--luz-surface-strong, #333);
+      --kbd-edge: var(--luz-divider, #555);
+      --kbd-ink: var(--luz-text-primary, #ddd);
+      /* poster identity (not tokens): dark theme by default */
+      --logo-accent: #e0624f;
       --frame-shadow: 0 30px 80px -20px #000;
-      --install-bg: #1c1816; --install-ink: #ecdcb6;
-      --con-bg: #1e1e1e; --con-bar: #292929; --con-bar-line: #3a3a3a; --con-text: #e8e8e8; --con-title: #aaa;
-      --con-btn-bg: #3a3a3a; --con-btn-ink: #ddd; --con-btn-hover: #4a4a4a; --con-line: rgba(255, 255, 255, .04);
-      --con-warn-bg: rgba(255, 190, 0, .1); --con-warn-edge: #ffbe00; --con-err-bg: rgba(255, 60, 60, .12); --con-err-edge: #ff4d4d;
-      --con-obj: #9cdcfe; --con-foot-bg: #242424; --con-foot-ink: #888;
-      --kbd-bg: #333; --kbd-edge: #555; --kbd-ink: #ddd;
     }
 
     @media (prefers-color-scheme: light) {
-      :root:not([data-theme="dark"]) { color-scheme: light; --desk: #efe6d6; --bar-ink: #1f1b18; --logo-accent: #b4332c; --bar-hover: #000;
-      --frame-shadow: 0 24px 60px -24px rgba(60, 40, 20, .55);
-      --install-bg: #e6d6b3; --install-ink: #1f1b18;
-      --con-bg: #ffffff; --con-bar: #f1f3f4; --con-bar-line: #dadce0; --con-text: #202124; --con-title: #5f6368;
-      --con-btn-bg: #e8eaed; --con-btn-ink: #3c4043; --con-btn-hover: #dadce0; --con-line: rgba(0, 0, 0, .08);
-      --con-warn-bg: #fffbe5; --con-warn-edge: #f4bd00; --con-err-bg: #fff0f0; --con-err-edge: #d93025;
-      --con-obj: #1a73e8; --con-foot-bg: #f8f9fa; --con-foot-ink: #5f6368;
-      --kbd-bg: #e8eaed; --kbd-edge: #bdc1c6; --kbd-ink: #3c4043; }
+      :root:not([data-theme="dark"]) { color-scheme: light; --logo-accent: #b4332c; --frame-shadow: 0 24px 60px -24px rgba(60, 40, 20, .55); }
     }
-    :root[data-theme="light"] { color-scheme: light; --desk: #efe6d6; --bar-ink: #1f1b18; --logo-accent: #b4332c; --bar-hover: #000;
-      --frame-shadow: 0 24px 60px -24px rgba(60, 40, 20, .55);
-      --install-bg: #e6d6b3; --install-ink: #1f1b18;
-      --con-bg: #ffffff; --con-bar: #f1f3f4; --con-bar-line: #dadce0; --con-text: #202124; --con-title: #5f6368;
-      --con-btn-bg: #e8eaed; --con-btn-ink: #3c4043; --con-btn-hover: #dadce0; --con-line: rgba(0, 0, 0, .08);
-      --con-warn-bg: #fffbe5; --con-warn-edge: #f4bd00; --con-err-bg: #fff0f0; --con-err-edge: #d93025;
-      --con-obj: #1a73e8; --con-foot-bg: #f8f9fa; --con-foot-ink: #5f6368;
-      --kbd-bg: #e8eaed; --kbd-edge: #bdc1c6; --kbd-ink: #3c4043; }
+    :root[data-theme="light"] { color-scheme: light; --logo-accent: #b4332c; --frame-shadow: 0 24px 60px -24px rgba(60, 40, 20, .55); }
     :root[data-theme="dark"] { color-scheme: dark; }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -66,7 +77,7 @@
     a { color: inherit; }
     code { font-family: var(--type); font-size: .92em; }
     kbd { font-family: var(--type); background: var(--kbd-bg); border: 1px solid var(--kbd-edge); border-radius: 3px; padding: 0 5px; color: var(--kbd-ink); font-size: .8em; }
-    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 var(--luz-space-lg, 24px); }
 
     /* Paper */
     .paper {
@@ -87,7 +98,7 @@
     .bar nav a:hover { opacity: 1; color: var(--bar-hover); }
     .theme { padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; opacity: .85; cursor: pointer; }
     .theme:hover { opacity: 1; color: var(--bar-hover); }
-    .theme:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+    .theme:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
 
     /* ---------- Hero poster ---------- */
     .hero { padding: 6px 0 70px; }
@@ -110,7 +121,7 @@
     .starring i { display: block; font-style: normal; font-family: var(--body); font-weight: 400; font-size: 2.6cqw; letter-spacing: .02em; margin: -.4cqw 0 2.2cqw; }
     .cta { left: 8cqw; bottom: 7cqw; display: inline-block; padding: 1.5cqw 3.2cqw; background: var(--cream); color: var(--ink); border: .5cqw solid var(--ink); font-family: var(--display); font-size: 4cqw; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; transition: background .15s, color .15s; }
     .cta:hover { background: var(--ink); color: var(--cream); }
-    .cta:focus-visible, .btn:focus-visible, .tab:focus-visible, .copy:focus-visible, .bar a:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+    .cta:focus-visible, .btn:focus-visible, .tab:focus-visible, .copy:focus-visible, .bar a:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
     .poster .credit { font-family: var(--display); fill: var(--cream); text-transform: uppercase; }
 
     .poster .art.land { display: none; }
@@ -160,7 +171,7 @@
     .mode:hover { background: rgba(236, 220, 182, .16); }
     .mode[aria-selected="true"] { background: var(--cream); color: var(--ink); }
     .mode:focus-visible { outline: 3px solid var(--ink); outline-offset: -6px; }
-    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .tabs { display: flex; flex-wrap: wrap; gap: var(--luz-space-xs, 8px); margin-bottom: var(--luz-space-sm, 12px); }
     .tab { border: 2px solid var(--cream); background: transparent; color: var(--cream); padding: 3px 14px; font-family: var(--display); font-size: 1.05rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: all .15s; }
     .tab:hover { background: rgba(236, 220, 182, .18); }
     .tab[aria-selected="true"] { background: var(--cream); color: var(--ink); }
@@ -184,11 +195,11 @@
     .console-actions button { background: var(--con-btn-bg); border: 0; color: var(--con-btn-ink); padding: 3px 10px; font: inherit; font-size: .72rem; cursor: pointer; }
     .console-actions button:hover { background: var(--con-btn-hover); }
     .console-body { height: 380px; overflow-y: auto; padding: 8px 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.5; font-weight: 400; }
-    .line { overflow: hidden; padding: 2px 14px; white-space: pre-wrap; word-break: break-word; border-bottom: 1px solid var(--con-line); }
+    .line { overflow: hidden; padding: var(--luz-space-3xs, 2px) var(--luz-space-sm, 14px); white-space: pre-wrap; word-break: break-word; border-bottom: 1px solid var(--con-line); }
     .line.warn { background: var(--con-warn-bg); border-left: 3px solid var(--con-warn-edge); }
     .line.error { background: var(--con-err-bg); border-left: 3px solid var(--con-err-edge); }
     .line .obj { color: var(--con-obj); }
-    .console-foot { padding: 7px 14px; border-top: 1px solid var(--con-bar-line); background: var(--con-foot-bg); color: var(--con-foot-ink); font-size: .72rem; }
+    .console-foot { padding: var(--luz-space-xs, 8px) var(--luz-space-sm, 14px); border-top: 1px solid var(--con-bar-line); background: var(--con-foot-bg); color: var(--con-foot-ink); font-size: .72rem; }
 
     .stats { display: flex; justify-content: center; margin-top: 64px; }
     .stat { padding: 0 clamp(18px, 5vw, 56px); text-align: center; border-left: 2px solid rgba(236, 220, 182, .5); }
@@ -210,6 +221,9 @@
     .btn.red { background: var(--red); border-color: var(--red); }
     .btn.red:hover { background: transparent; color: var(--red); }
     .finale em { font-family: var(--display); font-style: normal; font-size: 1.6rem; color: var(--red); }
+    footer a { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    footer a:hover { color: var(--red); }
+    footer a:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
     footer { margin-top: 70px; padding-top: 18px; border-top: 3px double var(--ink); font-size: .85rem; letter-spacing: .14em; text-transform: uppercase; }
 
     @media (max-width: 860px) {
@@ -233,10 +247,11 @@
     <div class="bar">
       <a class="logo" href="#top">KONG<span>.SOLE</span></a>
       <nav aria-label="Sections">
-        <a href="#features">Cast</a>
+        <a href="#features">What is this</a>
         <a href="#playground">The show</a>
         <a href="#start">Install</a>
-        <a href="https://github.com/nandovejer/console.cool" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.npmjs.com/package/kong.sole" target="_blank" rel="noopener">npm</a>
+        <a href="https://github.com/nandovejer/kong.sole" target="_blank" rel="noopener">GitHub</a>
         <button class="theme" type="button" id="theme" aria-label="Color theme">Theme: auto</button>
       </nav>
     </div>
@@ -323,7 +338,7 @@
   <!-- CAST -->
   <section class="paper" id="features">
     <div class="wrap">
-      <div class="head"><small>The cast</small><h2>Face the Kong</h2></div>
+      <div class="head"><small>What is this?</small><h2>Face the Kong</h2></div>
       <p class="intro">Everything is a single method call. No setup, no build step, and it falls back to plain text when styles are not supported.</p>
       <div class="cast">
         <div class="role"><span class="n">01</span><div><h3>Status logs</h3><p>Success, info, warning and error with badges and icons. They use the real <code>console.warn</code> and <code>console.error</code>, so DevTools filters keep working.</p></div></div>
@@ -387,20 +402,24 @@
   <!-- INSTALL -->
   <section id="start">
     <div class="wrap">
-      <div class="head"><small>Get started</small><h2>Three lines to roll</h2></div>
-      <p class="intro">Import it from a CDN or copy <code>kong.sole.min.js</code> into your project.</p>
+      <div class="head"><small>Get started</small><h2>Ready in a minute</h2></div>
+      <p class="intro">Install it from npm, load it from a CDN or copy <code>kong.sole.min.js</code> into your project.</p>
       <div class="play install">
         <div class="play-head">
           <p>ES module, zero dependencies</p>
           <button class="copy" type="button" data-copy="#install-code">Copy</button>
         </div>
-        <pre><code id="install-code"><span class="c">// 1. Import</span>
-import kong from 'https://cdn.jsdelivr.net/gh/nandovejer/console.cool@0.3.0/kong.sole.min.js';
+        <pre><code id="install-code"><span class="c">// 1. Install</span>
+npm install kong.sole
 
-<span class="c">// 2. Log with style</span>
+<span class="c">// 2. Import (or load it from a CDN, no build step)</span>
+import kong from 'kong.sole';
+<span class="c">// import kong from 'https://cdn.jsdelivr.net/npm/kong.sole@0.4.0/kong.sole.min.js';</span>
+
+<span class="c">// 3. Log with style</span>
 kong.success('It works!');
 
-<span class="c">// 3. Turn everything off in production</span>
+<span class="c">// 4. Turn everything off in production</span>
 kong.enabled = false;</code></pre>
       </div>
       <div class="roll">A zero-dependency production</div>
@@ -414,11 +433,11 @@ kong.enabled = false;</code></pre>
     <div class="wrap">
       <div class="head"><small>The end</small><h2>Roll credits</h2></div>
       <div class="finale">
-        <a class="btn" href="https://github.com/nandovejer/console.cool#readme" target="_blank" rel="noopener">Read the docs</a>
+        <a class="btn" href="https://github.com/nandovejer/kong.sole#readme" target="_blank" rel="noopener">Read the docs</a>
         <em>or</em>
-        <a class="btn red" href="https://github.com/nandovejer/console.cool" target="_blank" rel="noopener">Star the repo</a>
+        <a class="btn red" href="https://github.com/nandovejer/kong.sole" target="_blank" rel="noopener">Star the repo</a>
       </div>
-      <footer>MIT licensed, Nando Muñoz. If you believe in magic, open the console.</footer>
+      <footer>MIT licensed, <a href="https://github.com/nandovejer" target="_blank" rel="noopener">Nando Muñoz</a>. Design tokens by <a href="https://github.com/nandovejer/luz" target="_blank" rel="noopener">LUZ</a>. If you believe in magic, open the console.</footer>
     </div>
   </section>
 
@@ -588,7 +607,7 @@ kong.enabled = false;</code></pre>
 
     /* ---------- Welcome ---------- */
     kong.logo();
-    kong.signature('kong.sole', 'github.com/nandovejer/console.cool');
+    kong.signature('kong.sole', 'github.com/nandovejer/kong.sole');
     kong.success('Pick a recipe and press Run.');
   </script>
 </body>
