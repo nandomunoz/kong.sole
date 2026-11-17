@@ -224,6 +224,31 @@
     footer a { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
     footer a:hover { color: var(--red); }
     footer a:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    footer .link { padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+    footer .link:hover { color: var(--red); }
+    footer .link:focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+    /* ---------- Privacy sheet (a paper dialog; paper stays paper in dark and light) ---------- */
+    dialog.sheet { width: min(640px, calc(100vw - 32px)); max-height: min(86vh, 760px); margin: auto; padding: 0; border: 0; color: var(--ink); box-shadow: 0 30px 80px -20px #000, 0 0 0 10px var(--sheet); overflow: auto; overscroll-behavior: contain; }
+    dialog.sheet:focus { outline: none; }
+    dialog.sheet::backdrop { background: rgba(10, 8, 6, .72); backdrop-filter: blur(3px); }
+    dialog.sheet[open] { animation: sheet-in .22s ease-out; }
+    @keyframes sheet-in { from { opacity: 0; transform: translateY(14px) scale(.98); } }
+    .sheet-in { padding: 34px clamp(20px, 5vw, 44px) 30px; }
+    .sheet small { font-family: var(--display); letter-spacing: .22em; color: var(--red); font-size: 1rem; }
+    .sheet h2 { font-family: var(--display); font-weight: 400; font-size: clamp(2.2rem, 7vw, 3.2rem); line-height: .95; text-transform: uppercase; margin: 2px 0 10px; }
+    .sheet .lede { font-size: 1.12rem; font-weight: 400; margin-bottom: 20px; }
+    .sheet dl { border-top: 3px double var(--ink); }
+    .sheet dt { font-family: var(--display); letter-spacing: .08em; font-size: 1.15rem; text-transform: uppercase; margin-top: 16px; }
+    .sheet dd { font-size: .98rem; margin-top: 2px; }
+    .sheet dd + dd { margin-top: 6px; }
+    .sheet .ok { display: inline-block; margin-right: 6px; padding: 0 7px; background: var(--ink); color: var(--cream); font-family: var(--display); letter-spacing: .1em; font-size: .85rem; vertical-align: 1px; }
+    .sheet .ok.warn { background: var(--red); }
+    .sheet .foot { margin-top: 20px; padding-top: 12px; border-top: 1px solid rgba(31, 27, 24, .35); font-size: .82rem; letter-spacing: .08em; text-transform: uppercase; }
+    .sheet .x { position: sticky; top: 0; float: right; margin: 12px 12px 0 0; padding: 4px 12px; border: 2px solid var(--ink); background: var(--cream); color: var(--ink); font-family: var(--display); font-size: 1.05rem; letter-spacing: .12em; cursor: pointer; z-index: 1; }
+    .sheet .x:hover { background: var(--ink); color: var(--cream); }
+    .sheet .x:focus-visible, .sheet a:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) { dialog.sheet[open] { animation: none; } }
     footer { margin-top: 70px; padding-top: 18px; border-top: 3px double var(--ink); font-size: .85rem; letter-spacing: .14em; text-transform: uppercase; }
 
     @media (max-width: 860px) {
@@ -267,8 +292,8 @@
           <defs>
             <path id="cur" d="M0 0 L0 22 L5.5 17 L9.5 26 L13.5 24 L9.5 15 L17 15Z" />
           </defs>
-          <!-- Kong on the tower (printed look: multiply lets the paper show through) -->
-          <image href="assets/kong-tower.webp" x="116" y="270" width="485" height="680" preserveAspectRatio="xMidYMax meet" style="mix-blend-mode:multiply" />
+          <!-- Kong on the tower (transparent PNG-style cutout so the paper shows through) -->
+          <image href="assets/kong-tower.webp" x="116" y="270" width="485" height="680" preserveAspectRatio="xMidYMax meet" />
           <!-- flying cursors -->
           <use href="#cur" fill="#7a1f1a" transform="translate(610 290) rotate(22) scale(1.9)" />
           <use href="#cur" fill="#7a1f1a" transform="translate(240 770) rotate(-28) scale(1.7)" />
@@ -287,8 +312,8 @@
 
         <svg class="art land" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           <defs><path id="cur2" d="M0 0 L0 22 L5.5 17 L9.5 26 L13.5 24 L9.5 15 L17 15Z" /></defs>
-          <!-- Kong on the tower (printed look: multiply lets the paper show through) -->
-          <image href="assets/kong-tower.webp" x="671" y="20" width="627" height="880" preserveAspectRatio="xMidYMax meet" style="mix-blend-mode:multiply" />
+          <!-- Kong on the tower (transparent PNG-style cutout so the paper shows through) -->
+          <image href="assets/kong-tower.webp" x="671" y="20" width="627" height="880" preserveAspectRatio="xMidYMax meet" />
           <!-- flying cursors -->
           <use href="#cur2" fill="#7a1f1a" transform="translate(560 250) rotate(22) scale(2.6)" />
           <use href="#cur2" fill="#7a1f1a" transform="translate(700 620) rotate(-28) scale(2.3)" />
@@ -374,7 +399,7 @@
       <div class="stats">
         <div class="stat"><b>0</b><span>Dependencies</span></div>
         <div class="stat"><b>1</b><span>File</span></div>
-        <div class="stat"><b>14.3kb</b><span>Minified + gzip</span></div>
+        <div class="stat"><b>14.4kb</b><span>Minified + gzip</span></div>
       </div>
     </div>
   </section>
@@ -419,12 +444,49 @@ kong.enabled = false;</code></pre>
         <em>or</em>
         <a class="btn red" href="https://github.com/nandovejer/kong.sole" target="_blank" rel="noopener">Star the repo</a>
       </div>
-      <footer>MIT licensed, <a href="https://github.com/nandovejer" target="_blank" rel="noopener">Nando Muñoz</a>. Design tokens by <a href="https://github.com/nandovejer/luz" target="_blank" rel="noopener">LUZ</a>. If you believe in magic, open the console.</footer>
+      <footer>MIT licensed, <a href="https://github.com/nandovejer" target="_blank" rel="noopener">Nando Muñoz</a>. Design tokens by <a href="https://github.com/nandovejer/luz" target="_blank" rel="noopener">LUZ</a>. <button class="link" type="button" id="privacy-open" aria-haspopup="dialog">Privacy</button>. If you believe in magic, open the console.</footer>
     </div>
   </section>
 
+  <!-- PRIVACY -->
+  <dialog class="sheet paper" id="privacy" aria-labelledby="privacy-title">
+    <form method="dialog"><button class="x" type="submit" aria-label="Close privacy notice">Close</button></form>
+    <div class="sheet-in">
+      <small>Fine print, big letters</small>
+      <h2 id="privacy-title">Privacy</h2>
+      <p class="lede">We do not collect anything about you. No accounts, no cookies, no analytics, no tracking.</p>
+      <dl>
+        <dt>The library</dt>
+        <dd><span class="ok">None</span>kong.sole makes no network requests, stores nothing and has no telemetry. It only prints to your own console.</dd>
+        <dd>Two things happen only when you ask: <code>kong.copy()</code> writes to your clipboard, and <code>kong.image(url)</code> makes the browser fetch the address you gave it.</dd>
+
+        <dt>This website</dt>
+        <dd><span class="ok">Local</span>It is a static page. The playground runs in your browser and the code you type never leaves it.</dd>
+        <dd><span class="ok">1 item</span>Your theme choice (auto, dark or light) is saved in this browser as <code>kong-theme</code> in localStorage. Clear your site data to remove it.</dd>
+        <dd><span class="ok warn">Google</span>The fonts come from Google Fonts, so Google receives your IP address and browser details when the page loads. The page works without them and falls back to system fonts.</dd>
+
+        <dt>When you install it</dt>
+        <dd>npm, jsDelivr and unpkg serve the file and see the request, as any server does. Their own privacy policies apply. To avoid third parties, install from npm and bundle it yourself.</dd>
+
+        <dt>Questions</dt>
+        <dd>Open an issue on <a href="https://github.com/nandovejer/kong.sole/issues" target="_blank" rel="noopener">GitHub</a>. If this ever changes, this page changes first.</dd>
+      </dl>
+      <p class="foot">Last updated 17 November 2026</p>
+    </div>
+  </dialog>
+
   <script type="module">
     import kong from './kong.sole.min.js';
+
+    /* ---------- Privacy sheet ---------- */
+    const priv = document.getElementById('privacy');
+    const privOpen = document.getElementById('privacy-open');
+    const openPriv = () => { if (!priv.open) priv.showModal(); };
+    privOpen.onclick = openPriv;
+    priv.addEventListener('click', (e) => { if (e.target === priv) priv.close(); }); // click on the backdrop
+    priv.addEventListener('close', () => { if (location.hash === '#privacy') history.replaceState(null, '', location.pathname + location.search); privOpen.focus(); });
+    if (location.hash === '#privacy') openPriv();
+    addEventListener('hashchange', () => { if (location.hash === '#privacy') openPriv(); });
 
     /* ---------- Mirror console output into the page ---------- */
     const out = document.getElementById('out');
