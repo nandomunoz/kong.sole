@@ -4,233 +4,445 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="kong.sole: make your browser console look good. kong.error(), SVG, base64 images, banners and more. Zero dependencies." />
+  <meta property="og:title" content="kong.sole" />
+  <meta property="og:description" content="Make your browser console look good. Zero dependencies." />
+  <meta property="og:image" content="./assets/poster.jpg" />
   <link href="data:image/x-icon;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD//wAA//8AAP//AAD//wAA//8AAP7/AAD8fwAAwAcAAMAHAACMYwAADWEAAP//AAD//wAA//8AAP//AAD//wAA" rel="icon" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Oswald:wght@300;400;500&family=Staatliches&display=swap" media="print" onload="this.media='all'" />
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Oswald:wght@300;400;500&family=Staatliches&display=swap" /></noscript>
+  <link rel="modulepreload" href="./kong.sole.min.js" />
+  <link rel="preload" href="./assets/grain.png" as="image" />
+  <title>kong.sole: make your console look good</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --ink: #1f1b18;
+      --red: #b4332c;
+      --red-dark: #8f2620;
+      --kraft: #d9bf8f;
+      --cream: #ecdcb6;
+      --sheet: #efece4;
+      --display: Staatliches, Impact, "Arial Narrow Bold", "Haettenschweiler", sans-serif;
+      --body: Oswald, "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+      --type: "Courier Prime", "Courier New", monospace;
+      --grain: url('./assets/grain.png');
     }
 
-    body {
-      text-align: center;
-      background-color: #282828;
-      color: white;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-        Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--body); font-weight: 300; line-height: 1.6; color: var(--ink); background: #1b1613; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+    a { color: inherit; }
+    code { font-family: var(--type); font-size: .92em; }
+    kbd { font-family: var(--type); background: #333; border: 1px solid #555; border-radius: 3px; padding: 0 5px; color: #ddd; font-size: .8em; }
+    .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+    /* Paper */
+    .paper {
+      background:
+        var(--grain),
+        radial-gradient(140px 110px at 8% 62%, rgba(110, 70, 30, .22), transparent 70%),
+        radial-gradient(180px 140px at 94% 18%, rgba(110, 70, 30, .16), transparent 70%),
+        radial-gradient(120% 90% at 30% 15%, #e8d3a8, #d6ba88 70%, #c2a373);
     }
+    .stripes { height: 14px; background: repeating-linear-gradient(135deg, var(--ink) 0 14px, var(--red) 14px 28px, var(--cream) 28px 42px); }
 
-    a {
-      color: white;
+    /* ---------- Top bar ---------- */
+    .bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 32px; padding: 18px 0; color: var(--cream); }
+    .logo { font-family: var(--display); font-size: 1.7rem; letter-spacing: .06em; text-decoration: none; }
+    .logo span { color: #e0624f; }
+    .bar nav { display: flex; flex-wrap: wrap; gap: 8px 28px; font-size: .85rem; letter-spacing: .16em; text-transform: uppercase; }
+    .bar nav a { text-decoration: none; opacity: .85; }
+    .bar nav a:hover { opacity: 1; color: #fff; }
+
+    /* ---------- Hero poster ---------- */
+    .hero { padding: 6px 0 70px; }
+    .frame { width: min(100%, 780px); margin: 0 auto; padding: 14px; background: var(--sheet); box-shadow: 0 30px 80px -20px #000, 0 0 0 1px rgba(255, 255, 255, .06); }
+    .poster { position: relative; container-type: inline-size; aspect-ratio: 700 / 950; overflow: hidden; }
+    .poster .art { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .poster > :not(.art) { position: absolute; }
+    .poster h1 { left: 8cqw; top: 5cqw; font-family: var(--display); font-weight: 400; font-size: 19cqw; line-height: .82; letter-spacing: .01em; text-transform: uppercase; }
+    .poster h1 span { display: block; padding-left: 7cqw; }
+    .tagline { right: 6cqw; top: 8cqw; width: 40cqw; text-align: right; font-family: var(--display); font-size: 6cqw; line-height: .98; letter-spacing: .02em; text-transform: uppercase; }
+    .starring { left: 9cqw; top: 39cqw; font-family: var(--display); text-transform: uppercase; line-height: 1; }
+    .starring small { display: block; font-family: var(--body); font-weight: 500; font-size: 2.1cqw; letter-spacing: .12em; margin-bottom: 1.2cqw; }
+    .starring b { display: block; font-weight: 400; font-size: 8cqw; letter-spacing: .01em; line-height: .95; }
+    .starring i { display: block; font-style: normal; font-family: var(--body); font-weight: 400; font-size: 2.6cqw; letter-spacing: .02em; margin: -.4cqw 0 2.2cqw; }
+    .cta { left: 8cqw; bottom: 7cqw; display: inline-block; padding: 1.5cqw 3.2cqw; background: var(--cream); color: var(--ink); border: .5cqw solid var(--ink); font-family: var(--display); font-size: 4cqw; letter-spacing: .08em; text-transform: uppercase; text-decoration: none; transition: background .15s, color .15s; }
+    .cta:hover { background: var(--ink); color: var(--cream); }
+    .cta:focus-visible, .btn:focus-visible, .tab:focus-visible, .copy:focus-visible, .bar a:focus-visible { outline: 3px solid var(--red); outline-offset: 3px; }
+    .poster .credit { font-family: var(--display); fill: var(--cream); text-transform: uppercase; }
+
+    /* ---------- Section frame ---------- */
+    section { padding: 84px 0; }
+    .head { text-align: center; margin-bottom: 40px; }
+    .head small { display: block; font-weight: 500; font-size: .9rem; letter-spacing: .3em; text-transform: uppercase; }
+    .head h2 { font-family: var(--display); font-weight: 400; font-size: clamp(2.6rem, 7vw, 4.6rem); line-height: 1; letter-spacing: .02em; text-transform: uppercase; }
+    .intro { max-width: 38em; margin: -14px auto 48px; text-align: center; font-size: 1.05rem; }
+
+    /* ---------- Cast (features) ---------- */
+    #features { color: var(--ink); }
+    #features .head small { color: var(--red); }
+    .cast { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 56px; }
+    .role { display: grid; grid-template-columns: 52px 1fr; gap: 0 14px; padding: 22px 0; border-top: 2px solid var(--ink); }
+    .role .n { font-family: var(--display); font-size: 2.6rem; line-height: 1; color: var(--red); }
+    .role h3 { font-family: var(--display); font-weight: 400; font-size: 2rem; line-height: 1.05; letter-spacing: .02em; text-transform: uppercase; }
+    .role p { font-size: .98rem; margin-top: 4px; }
+    .cast .role:nth-last-child(-n+2) { border-bottom: 2px solid var(--ink); }
+
+    /* ---------- The show (playground) ---------- */
+    #playground { background: var(--grain), radial-gradient(90% 70% at 50% 0%, #c0443a, var(--red) 55%, #8f2620); color: var(--cream); }
+    #playground .head small { color: #f0b9a8; }
+    .peak { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+    .tab { border: 2px solid var(--cream); background: transparent; color: var(--cream); padding: 3px 14px; font-family: var(--display); font-size: 1.05rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; transition: all .15s; }
+    .tab:hover { background: rgba(236, 220, 182, .18); }
+    .tab[aria-selected="true"] { background: var(--cream); color: var(--ink); }
+    .play { background: var(--cream); background-image: var(--grain); color: var(--ink); border: 3px solid var(--ink); box-shadow: 8px 8px 0 var(--ink); }
+    .play-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px; border-bottom: 3px solid var(--ink); font-weight: 400; font-size: .95rem; }
+    .play-head > div { display: flex; gap: 8px; flex: none; }
+    .play pre { padding: 16px 18px; overflow-x: auto; font-family: var(--type); font-size: .8rem; line-height: 1.7; }
+    .play pre .c { color: #8a6a4a; }
+    .copy, .btn.small { border: 2px solid var(--ink); background: transparent; color: var(--ink); padding: 2px 12px; font-family: var(--display); font-size: 1rem; letter-spacing: .08em; text-transform: uppercase; cursor: pointer; }
+    .copy:hover { background: var(--ink); color: var(--cream); }
+    .btn.small { background: var(--red); color: var(--cream); }
+    .btn.small:hover { background: var(--ink); }
+
+    .console { border: 3px solid var(--ink); background: #1e1e1e; box-shadow: 8px 8px 0 var(--ink); color: #e8e8e8; }
+    .console-bar { display: flex; align-items: center; gap: 8px; padding: 9px 14px; background: #292929; border-bottom: 1px solid #3a3a3a; }
+    .dots { display: flex; gap: 6px; }
+    .dots i { width: 10px; height: 10px; border-radius: 50%; }
+    .dots i:nth-child(1) { background: #ff5f57; } .dots i:nth-child(2) { background: #febc2e; } .dots i:nth-child(3) { background: #28c840; }
+    .console-title { margin-left: 6px; color: #aaa; font-size: .75rem; font-family: ui-monospace, Menlo, Consolas, monospace; }
+    .console-actions { margin-left: auto; display: flex; gap: 6px; }
+    .console-actions button { background: #3a3a3a; border: 0; color: #ddd; padding: 3px 10px; font: inherit; font-size: .72rem; cursor: pointer; }
+    .console-actions button:hover { background: #4a4a4a; }
+    .console-body { height: 380px; overflow-y: auto; padding: 8px 0; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; line-height: 1.5; font-weight: 400; }
+    .line { overflow: hidden; padding: 2px 14px; white-space: pre-wrap; word-break: break-word; border-bottom: 1px solid rgba(255, 255, 255, .04); }
+    .line.warn { background: rgba(255, 190, 0, .1); border-left: 3px solid #ffbe00; }
+    .line.error { background: rgba(255, 60, 60, .12); border-left: 3px solid #ff4d4d; }
+    .line .obj { color: #9cdcfe; }
+    .console-foot { padding: 7px 14px; border-top: 1px solid #3a3a3a; background: #242424; color: #888; font-size: .72rem; }
+
+    .stats { display: flex; justify-content: center; margin-top: 64px; }
+    .stat { padding: 0 clamp(18px, 5vw, 56px); text-align: center; border-left: 2px solid rgba(236, 220, 182, .5); }
+    .stat:first-child { border-left: 0; }
+    .stat b { display: block; font-family: var(--display); font-weight: 400; font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: 1; }
+    .stat span { font-weight: 500; font-size: .8rem; letter-spacing: .22em; text-transform: uppercase; }
+
+    /* ---------- Install ---------- */
+    #start { background: #1c1816; color: var(--cream); text-align: center; }
+    #start .head small { color: #e0624f; }
+    #start .install { max-width: 740px; margin: 0 auto; text-align: left; box-shadow: 8px 8px 0 var(--red); }
+    .roll { margin-top: 48px; font-family: var(--display); letter-spacing: .12em; font-size: 1.1rem; text-transform: uppercase; opacity: .8; }
+
+    /* ---------- Finale ---------- */
+    #more { text-align: center; }
+    .finale { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 18px 28px; }
+    .btn { display: inline-block; padding: 12px 34px; border: 4px solid var(--ink); background: var(--ink); color: var(--cream); font-family: var(--display); font-size: 2rem; letter-spacing: .06em; text-transform: uppercase; text-decoration: none; transition: background .15s, color .15s, transform .15s; }
+    .btn:hover { background: transparent; color: var(--ink); transform: rotate(-1.2deg); }
+    .btn.red { background: var(--red); border-color: var(--red); }
+    .btn.red:hover { background: transparent; color: var(--red); }
+    .finale em { font-family: var(--display); font-style: normal; font-size: 1.6rem; color: var(--red); }
+    footer { margin-top: 70px; padding-top: 18px; border-top: 3px double var(--ink); font-size: .85rem; letter-spacing: .14em; text-transform: uppercase; }
+
+    @media (max-width: 860px) {
+      .peak { grid-template-columns: minmax(0, 1fr); }
+      .cast { grid-template-columns: minmax(0, 1fr); }
+      .cast .role:nth-last-child(2) { border-bottom: 0; }
+      .frame { padding: 8px; }
     }
-
-    h1,
-    h2,
-    small {
-      display: block;
-      width: 100%;
-      max-width: 980px;
-      margin: 0 auto;
+    @media (max-width: 520px) {
+      section { padding: 60px 0; }
+      .console-body { height: 300px; }
+      .btn { font-size: 1.5rem; padding: 10px 22px; }
+      .stat { padding: 0 14px; }
     }
-
-    small {
-      padding: 20px 0;
-    }
-
-    img {
-      display: block;
-      width: 100%;
-      max-width: 280px;
-    }
-
-    h1 {
-      font-size: 4em;
-      background-image: linear-gradient(60deg, #E21143, #FFB03A);
-      background-clip: text;
-      color: transparent;
-    }
-
-    header {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      gap: 0.25em;
-      max-width: 100vw;
-    }
-
-    .githubCorner:hover .githubCornerArm {
-      -webkit-animation: AnimaGithubCornerArm 560ms ease-in-out;
-      animation: AnimaGithubCornerArm 560ms ease-in-out;
-    }
-
-    @media (max-width: 500px) {
-      .githubCorner:hover .githubCornerArm {
-        -webkit-animation: none;
-        animation: none;
-      }
-
-      .githubCorner .githubCornerArm {
-        -webkit-animation: AnimaGithubCornerArm 560ms ease-in-out;
-        animation: AnimaGithubCornerArm 560ms ease-in-out;
-      }
-    }
-
-    @-webkit-keyframes AnimaGithubCornerArm {
-
-      0%,
-      100% {
-        -webkit-transform: rotate(0);
-        transform: rotate(0);
-      }
-
-      20%,
-      60% {
-        -webkit-transform: rotate(-25deg);
-        transform: rotate(-25deg);
-      }
-
-      40%,
-      80% {
-        -webkit-transform: rotate(10deg);
-        transform: rotate(10deg);
-      }
-    }
-
-    @keyframes AnimaGithubCornerArm {
-
-      0%,
-      100% {
-        -webkit-transform: rotate(0);
-        transform: rotate(0);
-      }
-
-      20%,
-      60% {
-        -webkit-transform: rotate(-25deg);
-        transform: rotate(-25deg);
-      }
-
-      40%,
-      80% {
-        -webkit-transform: rotate(10deg);
-        transform: rotate(10deg);
-      }
-    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
   </style>
-  <title>Console Cool</title>
 </head>
 
 <body>
-  <script type="module">
-    import Console from './console.cool.js';
-    console.log(`
-      *** FORMAT ***
-      `)
-    Console.italic('Console.italic()');
-    Console.bold('Console.bold()');
-    Console.underline('Console.underline()');
-    Console.strikethrough('Console.strikethrough()');
-    Console.red('Console.red()');
-    Console.blue('Console.blue()');
-    Console.green('Console.green()');
+  <div class="wrap">
+    <div class="bar">
+      <a class="logo" href="#top">KONG<span>.SOLE</span></a>
+      <nav aria-label="Sections">
+        <a href="#features">Cast</a>
+        <a href="#playground">The show</a>
+        <a href="#start">Install</a>
+        <a href="https://github.com/nandovejer/console.cool" target="_blank" rel="noopener">GitHub</a>
+      </nav>
+    </div>
+  </div>
 
-    console.log(`
-      *** STATUS ***
-      `)
-    Console.success('Console.success()');
-    Console.info('Console.info()');
-    Console.warning('Console.warning()');
-    Console.error('Console.error()');
+  <!-- POSTER -->
+  <header class="hero" id="top">
+    <div class="frame">
+      <div class="poster paper">
+        <svg class="art" viewBox="0 0 700 950" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+          <defs>
+            <path id="cur" d="M0 0 L0 22 L5.5 17 L9.5 26 L13.5 24 L9.5 15 L17 15Z" />
+          </defs>
+          <!-- beam -->
+          <polygon fill="#b4332c" points="366,428 484,428 452,950 40,950" />
+          <polygon fill="#8f2620" points="40,950 235,700 330,950" />
+          <!-- deco tower -->
+          <path fill="#b4332c" d="M425 232 L431 298 H448 V334 H466 V390 H484 V430 H366 V390 H384 V334 H402 V298 H419Z" />
+          <!-- console window silhouette -->
+          <g transform="rotate(-8 370 650)">
+            <rect x="296" y="596" width="150" height="100" rx="8" fill="#ecdcb6" />
+            <rect x="296" y="596" width="150" height="20" rx="8" fill="#d6ba88" />
+            <circle cx="310" cy="606" r="4" fill="#b4332c" /><circle cx="324" cy="606" r="4" fill="#b4332c" /><circle cx="338" cy="606" r="4" fill="#b4332c" />
+            <text x="310" y="672" font-size="42" fill="#b4332c" font-family="Staatliches, Impact, sans-serif">&gt;_</text>
+          </g>
+          <!-- flying cursors -->
+          <use href="#cur" fill="#7a1f1a" transform="translate(255 300) rotate(22) scale(1.9)" />
+          <use href="#cur" fill="#7a1f1a" transform="translate(528 440) rotate(-28) scale(1.7)" />
+          <use href="#cur" fill="#7a1f1a" transform="translate(92 548) rotate(42) scale(2.1)" />
+          <!-- black slab -->
+          <path fill="#1f1b18" d="M648 632 L664 672 L656 922 L372 922 L392 748 L560 706 L604 662Z" />
+          <g transform="translate(496 906) rotate(-52)">
+            <text class="credit" x="0" y="-4" font-size="13" letter-spacing="1">A zero-dependency</text>
+            <text class="credit" x="0" y="-32" font-size="30" letter-spacing="1">Production</text>
+            <text class="credit" x="0" y="-66" font-size="12" letter-spacing="1">From an idea by</text>
+            <text class="credit" x="0" y="-92" font-size="22" letter-spacing="1">Nando Muñoz</text>
+          </g>
+        </svg>
 
-
-
-
-    console.log(`
-      *** SIZE ***
-      `)
-    Console.h1('Console.h1()');
-    Console.h2('Console.h2()');
-    Console.h3('Console.h3()');
-
-
-    console.log(`
-      *** NERD ***
-      `)
-    Console.poo('Console.poo()');
-    Console.gandalf('Console.gandalf()');
-    Console.wonderwoman('Console.wonderwoman()');
-  </script>
-  <header>
-    <img src="./assets/content.png" aria-hidden="true">
-    <h1>Console Cool</h1>
-    <h2>If you beleve in magic, Open the console of your modern browser</h2>
-    <small>More in <a href="https://github.com/Silencespainter/console.cool">https://github.com/nandovejer/console.cool</a></small>
+        <h1>Kong<span>Sole</span></h1>
+        <div class="tagline">Make your<br>browser<br>console<br>look good</div>
+        <div class="starring">
+          <small>Starring</small>
+          <b>Error</b><i>kong.error()</i>
+          <b>Banner</b><i>kong.banner()</i>
+          <b>Image</b><i>kong.image()</i>
+        </div>
+        <a class="cta" href="#playground">Step inside</a>
+      </div>
+    </div>
   </header>
-  <style>
-    .githubCorner:hover>svg {
-      fill: blue;
+
+  <div class="stripes"></div>
+
+  <!-- CAST -->
+  <section class="paper" id="features">
+    <div class="wrap">
+      <div class="head"><small>The cast</small><h2>Face the Kong</h2></div>
+      <p class="intro">Everything is a single method call. No setup, no build step, and it falls back to plain text when styles are not supported.</p>
+      <div class="cast">
+        <div class="role"><span class="n">01</span><div><h3>Status logs</h3><p>Success, info, warning and error with badges and icons. They use the real <code>console.warn</code> and <code>console.error</code>, so DevTools filters keep working.</p></div></div>
+        <div class="role"><span class="n">02</span><div><h3>Banners and text</h3><p>SVG banners, block letters, gradients, rainbow and neon to make important messages stand out.</p></div></div>
+        <div class="role"><span class="n">03</span><div><h3>Images and base64</h3><p>Draw SVG, base64 strings, data URIs, URLs or Files straight in the console. Best in Chrome and Edge.</p></div></div>
+        <div class="role"><span class="n">04</span><div><h3>Characters</h3><p>A wizard, a cat, a robot and a ghost that say whatever you want in ASCII speech bubbles.</p></div></div>
+        <div class="role"><span class="n">05</span><div><h3>Debug helpers</h3><p>Badges, bars, sparklines, colored JSON, diffs and timers that turn green, yellow or red.</p></div></div>
+        <div class="role"><span class="n">06</span><div><h3>Your signature</h3><p>Leave a message for curious developers who open the console: <code>kong.signature('Ada', 'ada.dev')</code>.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stripes"></div>
+
+  <!-- THE SHOW -->
+  <section id="playground">
+    <div class="wrap">
+      <div class="head"><small>Now showing</small><h2>The playground</h2></div>
+      <p class="intro">Pick a recipe and press run. Each example executes the exact code shown and prints the result in the console and in your DevTools.</p>
+      <div class="peak">
+        <div>
+          <div class="tabs" role="tablist" id="tabs"></div>
+          <div class="play">
+            <div class="play-head">
+              <p id="play-desc"></p>
+              <div>
+                <button class="copy" type="button" id="play-copy">Copy</button>
+                <button class="btn small" type="button" id="play-run">Run</button>
+              </div>
+            </div>
+            <pre><code id="play-code"></code></pre>
+          </div>
+        </div>
+        <div class="console" aria-label="Live console preview">
+          <div class="console-bar">
+            <div class="dots"><i></i><i></i><i></i></div>
+            <span class="console-title">Console</span>
+            <div class="console-actions">
+              <button type="button" id="run-all">Run all</button>
+              <button type="button" id="clear">Clear</button>
+            </div>
+          </div>
+          <div class="console-body" id="out" role="log" aria-live="off"></div>
+          <div class="console-foot">This panel mirrors what <code>kong</code> prints. Press <kbd>F12</kbd> to see it in your real DevTools.</div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><b>0</b><span>Dependencies</span></div>
+        <div class="stat"><b>1</b><span>File</span></div>
+        <div class="stat"><b>5.3kb</b><span>Minified + gzip</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="stripes"></div>
+
+  <!-- INSTALL -->
+  <section id="start">
+    <div class="wrap">
+      <div class="head"><small>Get started</small><h2>Three lines to roll</h2></div>
+      <p class="intro">Import it from a CDN or copy <code>kong.sole.min.js</code> into your project.</p>
+      <div class="play install">
+        <div class="play-head">
+          <p>ES module, zero dependencies</p>
+          <button class="copy" type="button" data-copy="#install-code">Copy</button>
+        </div>
+        <pre><code id="install-code"><span class="c">// 1. Import</span>
+import kong from 'https://cdn.jsdelivr.net/gh/nandovejer/console.cool/kong.sole.min.js';
+
+<span class="c">// 2. Log with style</span>
+kong.success('It works!');
+
+<span class="c">// 3. Turn everything off in production</span>
+kong.enabled = false;</code></pre>
+      </div>
+      <div class="roll">A zero-dependency production</div>
+    </div>
+  </section>
+
+  <div class="stripes"></div>
+
+  <!-- FINALE -->
+  <section class="paper" id="more">
+    <div class="wrap">
+      <div class="head"><small>The end</small><h2>Roll credits</h2></div>
+      <div class="finale">
+        <a class="btn" href="https://github.com/nandovejer/console.cool#readme" target="_blank" rel="noopener">Read the docs</a>
+        <em>or</em>
+        <a class="btn red" href="https://github.com/nandovejer/console.cool" target="_blank" rel="noopener">Star the repo</a>
+      </div>
+      <footer>MIT licensed, Nando Muñoz. If you believe in magic, open the console.</footer>
+    </div>
+  </section>
+
+  <script type="module">
+    import kong from './kong.sole.min.js';
+
+    /* ---------- Mirror console output into the page ---------- */
+    const out = document.getElementById('out');
+    let depth = 0;
+
+    const fmtVal = (v) => {
+      if (typeof v === 'string') return v;
+      try { return typeof v === 'function' ? String(v) : JSON.stringify(v); } catch { return String(v); }
+    };
+
+    function addLine(level, args) {
+      const line = document.createElement('div');
+      line.className = 'line' + (level === 'warn' || level === 'error' ? ' ' + level : '');
+      line.style.paddingLeft = 14 + depth * 16 + 'px';
+      const add = (text, css, cls) => {
+        const s = document.createElement('span');
+        s.textContent = text;
+        if (css) s.style.cssText = css;
+        if (/url\(/.test(css || '')) s.style.display = 'inline-block'; // image boxes need a real height
+        if (cls) s.className = cls;
+        line.appendChild(s);
+      };
+      const [fmt, ...rest] = args;
+      if (typeof fmt === 'string' && /%[cso]/.test(fmt)) {
+        let css = '', i = 0;
+        for (const p of fmt.split(/(%[csoOdif%])/)) {
+          if (p === '%c') css = rest[i++] || '';
+          else if (p === '%%') add('%', css);
+          else if (/^%[soOdif]$/.test(p)) add(fmtVal(rest[i++]), css);
+          else if (p) add(p, css);
+        }
+        rest.slice(i).forEach((v) => add(' ' + fmtVal(v), '', 'obj'));
+      } else {
+        args.forEach((v, i) => add((i ? ' ' : '') + fmtVal(v), '', typeof v === 'string' ? '' : 'obj'));
+      }
+      out.appendChild(line);
+      while (out.childElementCount > 150) out.firstElementChild.remove(); // keep the DOM small
+      out.scrollTop = out.scrollHeight;
     }
 
-    .githubCorner:hover .githubArm {
-      -webkit-animation: animaGithubCornerArm 560ms ease-in-out;
-      animation: animaGithubCornerArm 560ms ease-in-out;
+    for (const level of ['log', 'info', 'warn', 'error']) {
+      const original = console[level].bind(console);
+      console[level] = (...args) => { original(...args); addLine(level, args); };
+    }
+    const origGroup = console.group.bind(console);
+    const origGroupEnd = console.groupEnd.bind(console);
+    console.group = (...args) => { origGroup(...args); addLine('log', args); depth++; };
+    console.groupEnd = () => { origGroupEnd(); depth = Math.max(0, depth - 1); };
+
+    /* ---------- Recipes (the code shown is the code executed) ---------- */
+    const RECIPES = [
+      { id: 'status', label: 'Status', desc: 'Four severity levels with badges and icons.',
+        code: "kong.success('Saved!');\nkong.info('Fetching users...', { page: 1 });\nkong.warning('Deprecated option');\nkong.error('Request failed');" },
+      { id: 'text', label: 'Text', desc: 'Make important messages impossible to miss.',
+        code: "kong.gradient('kong.gradient()');\nkong.rainbow('kong.rainbow()');\nkong.neon('kong.neon()');\nkong.box('Release 1.0\\nShip it!');" },
+      { id: 'svg', label: 'SVG', desc: 'Draw vector graphics right in the console.',
+        code: "kong.logo();\n\nkong.svg(`<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"120\" height=\"120\">\n  <circle cx=\"60\" cy=\"60\" r=\"50\" fill=\"#E21143\"/>\n  <circle cx=\"60\" cy=\"60\" r=\"28\" fill=\"#FFB03A\"/>\n</svg>`);" },
+      { id: 'banner', label: 'Banners', desc: 'Big titles: an SVG banner, block letters and a progress bar.',
+        code: "kong.banner('kong.sole', { subtitle: 'make your console look good' });\nkong.banner('LAUNCH', { from: '#00e5ff', to: '#b400ff', size: 44 });\nkong.ascii('KONG');\nkong.progress(72, { label: 'build' });" },
+      { id: 'image', label: 'Base64', desc: 'Paste any image as base64, a data URI, a URL, SVG markup or a File.',
+        code: "const svg = '<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"96\" height=\"96\"><rect width=\"96\" height=\"96\" rx=\"20\" fill=\"#E21143\"/><circle cx=\"48\" cy=\"48\" r=\"22\" fill=\"#FFB03A\"/></svg>';\nconst b64 = kong.encode(svg); // raw base64 string\n\nkong.image(b64);\n// kong.image('data:image/png;base64,...')\n// kong.image('./photo.jpg', { width: 200 })\n// kong.image(fileInput.files[0])" },
+      { id: 'say', label: 'Characters', desc: 'ASCII friends with something to say.',
+        code: "kong.say('You shall not pass!', 'wizard');\nkong.say('Meow. Tests are green.', 'cat');\nkong.say('Beep boop.', 'robot');" },
+      { id: 'debug', label: 'Debug', desc: 'Badges, charts and structured data at a glance.',
+        code: "kong.badge('build', 'passing');\nkong.badge('coverage', '72%', '#facc15');\nkong.bar({ js: 70, css: 20, html: 10 });\nkong.spark([1, 5, 3, 8, 2, 9, 4]);\nkong.json({ name: 'cool', stars: 42, tags: ['log', 'svg'], parent: null });\nkong.diff({ a: 1, b: 2 }, { a: 1, b: 3 });" },
+      { id: 'group', label: 'Groups', desc: 'Styled groups and timers that react to slow code.',
+        code: "kong.section('Checkout', () => {\n  kong.info('Validating cart');\n  kong.measure('fast task', () => 1 + 1);\n  kong.measure('slow task', () => {\n    const end = performance.now() + 150;\n    while (performance.now() < end) {}\n  });\n});" },
+      { id: 'format', label: 'Format', desc: 'The classics: bold, italic, colors and headings.',
+        code: "kong.h1('kong.h1()');\nkong.h2('kong.h2()');\nkong.bold('kong.bold()');\nkong.italic('kong.italic()');\nkong.underline('kong.underline()');\nkong.red('kong.red()');\nkong.green('kong.green()');" },
+      { id: 'nerd', label: 'Nerd', desc: 'Because debugging should be fun.',
+        code: "kong.poo('kong.poo()');\nkong.gandalf('kong.gandalf()');\nkong.wonderwoman('kong.wonderwoman()');" },
+    ];
+
+    const run = (r) => new Function('kong', r.code)(kong);
+    let current = RECIPES[0];
+
+    const tabs = document.getElementById('tabs');
+    const codeEl = document.getElementById('play-code');
+    const descEl = document.getElementById('play-desc');
+
+    function select(r) {
+      current = r;
+      codeEl.textContent = r.code;
+      descEl.textContent = r.desc;
+      tabs.querySelectorAll('.tab').forEach((t) => t.setAttribute('aria-selected', String(t.dataset.id === r.id)));
     }
 
-    @-webkit-keyframes animaGithubCornerArm {
+    RECIPES.forEach((r) => {
+      const b = document.createElement('button');
+      b.className = 'tab';
+      b.type = 'button';
+      b.setAttribute('role', 'tab');
+      b.dataset.id = r.id;
+      b.textContent = r.label;
+      b.onclick = () => select(r);
+      tabs.appendChild(b);
+    });
+    select(RECIPES[0]);
 
-      0%,
-      100% {
-        -webkit-transform: rotate(0);
-        transform: rotate(0);
-      }
+    document.getElementById('play-run').onclick = () => run(current);
+    document.getElementById('run-all').onclick = () => { out.textContent = ''; depth = 0; RECIPES.forEach(run); };
+    document.getElementById('clear').onclick = () => { out.textContent = ''; depth = 0; };
 
-      20%,
-      60% {
-        -webkit-transform: rotate(-25deg);
-        transform: rotate(-25deg);
-      }
-
-      40%,
-      80% {
-        -webkit-transform: rotate(10deg);
-        transform: rotate(10deg);
-      }
+    /* ---------- Copy buttons ---------- */
+    async function copy(btn, text) {
+      try { await navigator.clipboard.writeText(text); btn.textContent = 'Copied'; }
+      catch { btn.textContent = 'Press Ctrl+C'; }
+      setTimeout(() => (btn.textContent = 'Copy'), 1600);
     }
+    document.querySelectorAll('[data-copy]').forEach((b) =>
+      b.addEventListener('click', () => copy(b, document.querySelector(b.dataset.copy).textContent)));
+    document.getElementById('play-copy').onclick = (e) => copy(e.currentTarget, current.code);
 
-    @keyframes animaGithubCornerArm {
-
-      0%,
-      100% {
-        -webkit-transform: rotate(0);
-        transform: rotate(0);
-      }
-
-      20%,
-      60% {
-        -webkit-transform: rotate(-25deg);
-        transform: rotate(-25deg);
-      }
-
-      40%,
-      80% {
-        -webkit-transform: rotate(10deg);
-        transform: rotate(10deg);
-      }
-    }
-  </style>
-  <a target="_blank" href="https://github.com/nandovejer/console.cool" class="githubCorner">
-    <svg width="80" height="80" viewBox="0 0 250 250" style="color:#fff; position: absolute; top: 0; border: 0; right: 0;">
-      <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
-      <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="githubArm"></path>
-      <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
-    </svg>
-  </a>
+    /* ---------- Welcome ---------- */
+    kong.logo();
+    kong.signature('kong.sole', 'github.com/nandovejer/console.cool');
+    kong.success('Pick a recipe and press Run.');
+  </script>
 </body>
 
 </html>
