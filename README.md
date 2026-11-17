@@ -1,11 +1,11 @@
 <div align="center">
 
-<img src="./assets/banner.jpg" alt="kong.sole landing: a retro poster with a red beam, a deco tower and a console window" width="100%" />
+<img src="./assets/banner.jpg" alt="kong.sole landing: a retro poster of a red Kong climbing a deco tower while biplanes circle" width="100%" />
 
 # kong.sole
 
 **Make your browser console look good.**
-`kong.error()`, `kong.success()`, SVG, base64 images, banners and more. Dark and light aware, zero dependencies, 14.3 KB gzipped.
+`kong.error()`, `kong.success()`, SVG, base64 images, banners and more. Dark and light aware, zero dependencies, 14.4 KB gzipped.
 
 [![npm](https://img.shields.io/npm/v/kong.sole?style=flat-square&color=E21143)](https://www.npmjs.com/package/kong.sole)
 [![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/kong.sole?style=flat-square&color=282828)](https://www.jsdelivr.com/package/npm/kong.sole)
@@ -17,6 +17,8 @@
 [Install](#install) ·
 [Demo](#demo) ·
 [API](#api) ·
+[Performance](#performance) ·
+[Privacy](#privacy) ·
 [Roadmap](#roadmap) ·
 [Contributing](#contributing)
 
@@ -417,7 +419,7 @@ Or strip the calls with terser:
 
 ## Performance
 
-- **14.3 KB** minified and gzipped (12.8 KB with brotli). Use `kong.sole.min.js` from a CDN or your bundler. It is one object, so bundlers cannot drop unused helpers yet; splitting it into modules is on the roadmap.
+- **14.4 KB** minified and gzipped (12.9 KB with brotli). Use `kong.sole.min.js` from a CDN or your bundler. It is one object, so bundlers cannot drop unused helpers yet; splitting it into modules is on the roadmap.
 - **Free when off.** With `kong.enabled = false` every helper returns before doing any work. A call costs about 0.02 microseconds, so you can leave the logs in production code.
 - **Cheap when on.** Styles are built once at load, colors are cached and block letters are cached per character. `kong.ascii('KONG.SOLE')` is about 6x faster than in 0.2 and `kong.gradient()` about 3.5x faster.
 - Calls that print images are the only async ones (`kong.image`), because the browser has to decode the picture to know its size.
@@ -425,8 +427,8 @@ Or strip the calls with terser:
 | Call (20 chars) | Enabled | Disabled |
 | --- | --- | --- |
 | `kong.info('text')` | 0.13 us | 0.02 us |
-| `kong.gradient(text)` | 2.9 us | 0.03 us |
-| `kong.ascii('KONG.SOLE')` | 6.6 us | 0.03 us |
+| `kong.gradient(text)` | 3.0 us | 0.03 us |
+| `kong.ascii('KONG.SOLE')` | 6.5 us | 0.03 us |
 
 Measured on Node 22 with `console` stubbed out, so it counts only the library work.
 
@@ -444,6 +446,16 @@ Firefox is detected from its user agent: it lays out console lines differently a
 
 Each browser supports a different set of CSS properties inside the console, so logs can look a little different from one to another. Please [open an issue](https://github.com/nandovejer/kong.sole/issues) if something looks off.
 
+## Privacy
+
+kong.sole collects nothing: no network requests, no cookies, no analytics and no telemetry. It only prints to your own console.
+
+- `kong.copy()` writes to your clipboard and `kong.image(url)` makes the browser fetch the URL you pass, but only when you call them.
+- The landing page is static and its playground runs locally. It saves your theme choice in `localStorage` (`kong-theme`) and loads fonts from Google Fonts, so Google sees your IP address when the page loads.
+- Installing from a CDN (jsDelivr, unpkg) means that CDN sees the request. To avoid third parties, install from npm and bundle it.
+
+The landing has the same notice in a Privacy dialog (footer link, or `#privacy` in the URL).
+
 ## Roadmap
 
 - [x] `svg()`, `image()` (base64, data URI, URL, File), `encode()` and `toBase64()`
@@ -458,7 +470,8 @@ Each browser supports a different set of CSS properties inside the console, so l
 - [x] `tag()`, `once()`, `watch()`, `trace()`, `assert()`, `time()`, `timers()` and `count()`
 - [ ] Split into modules so bundlers can drop what you do not use
 - [ ] ANSI colors in Node.js
-- [ ] Publish to npm, with TypeScript types
+- [x] Published to npm
+- [ ] TypeScript types
 - [ ] Tests and CI
 - [ ] Interactive demo on GitHub Pages
 
@@ -471,7 +484,7 @@ Contributions are very welcome.
 1. Fork the repo
 2. Create a branch: `git checkout -b feat/my-cool-style`
 3. Add your style to `STYLES` (and an icon to `ICON`, if it has one), or a new helper, in [`kong.sole.js`](./kong.sole.js)
-4. Rebuild the minified file with `npm run build` (needs `terser`)
+4. Rebuild the minified file with `npm run build` (needs `terser` installed globally or via `npx`)
 5. Try it out in [`index.html`](./index.html) (add a recipe to the `RECIPES` list to show it in the playground). Colors of the page come from the LUZ tokens, so use `var(--luz-...)` for neutral surfaces and text instead of new hex values
 6. Open a pull request
 
