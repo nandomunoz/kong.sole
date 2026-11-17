@@ -1,0 +1,45 @@
+{
+  "name": "kong.sole",
+  "version": "0.3.0",
+  "description": "Make your browser console look good: kong.error(), SVG, base64 images, banners, gradients, badges and more. Zero dependencies.",
+  "type": "module",
+  "main": "./kong.sole.js",
+  "module": "./kong.sole.js",
+  "exports": {
+    ".": "./kong.sole.js",
+    "./min": "./kong.sole.min.js"
+  },
+  "files": [
+    "kong.sole.js",
+    "kong.sole.min.js"
+  ],
+  "sideEffects": false,
+  "keywords": [
+    "console",
+    "kong",
+    "log",
+    "logger",
+    "debug",
+    "style",
+    "svg",
+    "base64",
+    "banner",
+    "browser",
+    "devtools"
+  ],
+  "author": "Nando Muñoz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nandovejer/console.cool.git"
+  },
+  "homepage": "https://github.com/nandovejer/console.cool#readme",
+  "bugs": {
+    "url": "https://github.com/nandovejer/console.cool/issues"
+  },
+  "unpkg": "./kong.sole.min.js",
+  "jsdelivr": "./kong.sole.min.js",
+  "scripts": {
+    "build": "terser kong.sole.js --module --compress passes=2,pure_getters=true --mangle toplevel --format 'preamble=\"/*! kong.sole v0.3.0 | MIT */\"' -o kong.sole.min.js"
+  }
+}
