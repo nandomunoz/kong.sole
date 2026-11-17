@@ -271,9 +271,19 @@ kong.box = (text, { color = COLOR.brand1 } = {}) => {
 /* Images, base64 & SVG                                                */
 /* ------------------------------------------------------------------ */
 
+// Firefox lays out the console line differently from Chrome and Edge, so it needs its own box.
+const isFirefox = isBrowser && typeof navigator !== "undefined" && /firefox/i.test(navigator.userAgent);
+
 function paintBox(url, w, h) {
-    // A 1px font + padding makes an inline box of exactly w×h that holds the background.
-    return `font-size:1px;padding:${Math.round(h / 2)}px ${Math.round(w / 2)}px;background:url("${url}") no-repeat center/contain`;
+    const W = Math.max(1, Math.round(w));
+    const H = Math.max(1, Math.round(h));
+    const bg = `background:url("${url}") no-repeat center/contain`;
+    // Firefox ignores vertical padding when it sizes the line, so a tall image would be cut to one
+    // row. There the text (a non-breaking space) gets a real height: font-size and line-height equal
+    // to h, with horizontal padding for the width.
+    if (isFirefox) return `font-size:${H}px;line-height:${H}px;padding:0 ${Math.round(W / 2)}px;${bg}`;
+    // Chrome, Edge and the rest: a 1px font plus padding makes a box of exactly w by h.
+    return `font-size:1px;padding:${Math.round(H / 2)}px ${Math.round(W / 2)}px;${bg}`;
 }
 
 const withNs = (markup) => (/xmlns=/.test(markup) ? markup : markup.replace("<svg", '<svg xmlns="http://www.w3.org/2000/svg"'));
@@ -325,7 +335,7 @@ kong.svg = (markup, { width, height } = {}) => {
     const vb = (markup.match(/viewBox="[\d.\s-]*?([\d.]+)[\s,]+([\d.]+)"/) || []).slice(1);
     const w = width || Number(attr("width")) || Number(vb[0]) || 100;
     const h = height || (width && (Number(attr("height")) * width) / (Number(attr("width")) || width)) || Number(attr("height")) || Number(vb[1]) || w;
-    emit("log", [[" ", paintBox(toUrl(markup), w, h)]]);
+    emit("log", [["\u00a0", paintBox(toUrl(markup), w, h)]]);
 };
 
 /**
@@ -353,7 +363,7 @@ kong.image = async (src, { width, height, scale = 1, max = 480, mime } = {}) => 
         h = (h * max) / w;
         w = max;
     }
-    emit("log", [[" ", paintBox(url, w, h)]]);
+    emit("log", [["\u00a0", paintBox(url, w, h)]]);
 };
 
 /** Explicit alias: kong.base64("iVBORw0KGgo...") */
