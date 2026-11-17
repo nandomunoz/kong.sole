@@ -9,13 +9,15 @@
 
 [![npm](https://img.shields.io/npm/v/kong.sole?style=flat-square&color=E21143)](https://www.npmjs.com/package/kong.sole)
 [![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/kong.sole?style=flat-square&color=282828)](https://www.jsdelivr.com/package/npm/kong.sole)
+[![CI](https://github.com/nandovejer/kong.sole/actions/workflows/ci.yml/badge.svg)](https://github.com/nandovejer/kong.sole/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-E21143?style=flat-square)](./LICENSE)
 ![Zero dependencies](https://img.shields.io/badge/dependencies-0-FFB03A?style=flat-square)
 ![ES Module](https://img.shields.io/badge/ES-module-282828?style=flat-square)
-![Size](https://img.shields.io/github/size/nandovejer/kong.sole/kong.sole.js?style=flat-square&label=source&color=E21143)
+![Size](https://img.shields.io/github/size/nandovejer/kong.sole/kong.sole.min.js?style=flat-square&label=minified&color=E21143)
 
 [Install](#install) ·
 [Demo](#demo) ·
+[Modules](#load-only-what-you-use) ·
 [API](#api) ·
 [Performance](#performance) ·
 [Privacy](#privacy) ·
@@ -57,7 +59,7 @@ kong.h1('Hello console');
 kong.success('Everything works');
 ```
 
-Works with Vite, webpack, esbuild and any bundler that reads ES modules. The package ships the readable `kong.sole.js` and the minified `kong.sole.min.js` (`kong.sole/min`).
+Works with Vite, webpack, esbuild and any bundler that reads ES modules. The package ships the readable modules in `src/` (entry: `kong.sole.js`), the minified `kong.sole.min.js` (`kong.sole/min`) and a smaller `kong.sole.lite.min.js` (`kong.sole/lite/min`).
 
 ### CDN
 
@@ -78,12 +80,9 @@ No build step needed. Pin a version so an update never changes your page.
 | unpkg | `https://unpkg.com/kong.sole@0.4.0/kong.sole.min.js` |
 | jsDelivr (GitHub tag) | `https://cdn.jsdelivr.net/gh/nandovejer/kong.sole@0.4.0/kong.sole.min.js` |
 
-> [!NOTE]
-> The `@0.4.0` links start working once version 0.4.0 is published to npm and tagged on GitHub. Before that, use `@0.3.0`, which has the core helpers but not the inspect, debug and measure sections.
-
 ### Local copy
 
-Download [`kong.sole.min.js`](./kong.sole.min.js) (or the readable [`kong.sole.js`](./kong.sole.js)) into your project and import it:
+Download [`kong.sole.min.js`](./kong.sole.min.js) (everything in one file, or [`kong.sole.lite.min.js`](./kong.sole.lite.min.js) for the small build) into your project and import it:
 
 ```js
 import kong from './kong.sole.min.js';
@@ -97,9 +96,51 @@ kong.info('Ready to go');
 > [!NOTE]
 > The default export is `kong`, a small object that sits next to the native `console`: `kong.error('boom')`. You can name it whatever you like when you import it.
 
+### TypeScript
+
+Types ship with the package (`kong.sole.d.ts`), so autocomplete works with no extra install:
+
+```ts
+import kong from 'kong.sole';
+
+const ms: number = kong.timeEnd('render');
+const log = kong.tag('auth'); // Tagged: log, debug, info, success, warn, error
+```
+
+## Load only what you use
+
+`kong.sole` is split into modules in [`src/`](./src). The default import loads all of them. If you only need part of the API, start from `core` and add the modules you want. They all register on the same `kong` object, and the shipped files are plain ES modules a bundler can read.
+
+```js
+import kong from 'kong.sole/core';   // status logs and formatting: error, warning, h1, bold...
+import 'kong.sole/inspect';          // adds object, dir, type, table, log, snapshot, chart, date, copy
+
+kong.table(rows);
+kong.error('boom');
+```
+
+| Import | You get | Size (min + gzip) |
+| --- | --- | --- |
+| `kong.sole` or `kong.sole/min` | Everything | 14.4 kB |
+| `kong.sole/lite` or `kong.sole/lite/min` | Core, text, badge, bar, spark, json, diff, signature | 3.3 kB |
+| `kong.sole/core` | `success`, `info`, `warning`, `error`, headings and formatting | 2.5 kB |
+| `kong.sole/text` | Core plus `gradient`, `rainbow`, `neon`, `box`, `custom` | 2.5 kB |
+| `kong.sole/images` | Core plus `svg`, `image`, `base64`, `anima`, `encode`, `toBase64` | 3.0 kB |
+| `kong.sole/banners` | Images plus `ascii`, `banner`, `matrix`, `logo`, `progress` | 5.4 kB |
+| `kong.sole/say` | Core plus `say` | 2.2 kB |
+| `kong.sole/panels` | Banners plus `card`, `stats`, `steps`, `divider`, `splash`, `loader`, `aurora` | 7.5 kB |
+| `kong.sole/helpers` | Text plus `badge`, `bar`, `spark`, `json`, `diff`, `signature` | 3.3 kB |
+| `kong.sole/inspect` | Helpers and images plus `type`, `object`, `dir`, `table`, `log`, `snapshot`, `chart`, `date`, `copy` | 9.0 kB |
+| `kong.sole/debug` | Inspect plus `tag`, `mute`, `solo`, `clear`, `once`, `watch`, `trace`, `assert`, `time`, `timers`, `count`, `section`, `measure` | 10.5 kB |
+
+Sizes are for that import alone: each one already includes the modules it depends on. A method from a module you did not load is `undefined`, and the types always describe the full API.
+
+> [!NOTE]
+> Modules register themselves when they are imported, so `package.json` lists them under `sideEffects`. Bundlers keep `import 'kong.sole/inspect'` as written.
+
 ## Demo
 
-The landing page ([`index.html`](./index.html)) is a live playground: pick a recipe, press **Run** and the output shows up in a console panel on the page and in your real DevTools.
+The landing page ([`index.html`](./index.html)) is a live playground, also at <https://nandovejer.github.io/kong.sole/> once GitHub Pages is on for the repository: pick a recipe, press **Run** and the output shows up in a console panel on the page and in your real DevTools.
 
 ```sh
 git clone https://github.com/nandovejer/kong.sole.git
@@ -112,7 +153,7 @@ Then open <http://localhost:8000> and press <kbd>F12</kbd>.
 The page takes its surfaces, text colors, dividers, focus ring and spacing from the design tokens of [LUZ](https://github.com/nandovejer/luz) (`@luz-ds/tokens`, only the tokens, no components or fonts). They follow the light, dark and high contrast modes, and the Theme button on the page sets the same `data-theme` attribute. The tokens are a **dev dependency of the landing only**: the published `kong.sole` package has no dependencies. The CSS is vendored in `assets/luz-tokens.min.css` (MIT, see `assets/LUZ-LICENSE`); run `npm install` and `npm run vendor` to refresh it.
 
 > [!NOTE]
-> A static server is needed because the page loads `kong.sole.js` as an ES module, which browsers block on `file://`.
+> A static server is needed because the page loads `kong.sole.min.js` as an ES module, which browsers block on `file://`.
 
 ## API
 
@@ -387,7 +428,7 @@ kong.enabled = new URLSearchParams(location.search).has('debug')
   || localStorage.getItem('kong') === '1';
 ```
 
-To ship **zero bytes**, load it only in development and let the bundler drop the rest (`sideEffects: false` is already set):
+To ship **zero bytes** in production, load it only in development with a dynamic import, so the bundler leaves it out of the production build:
 
 ```js
 if (import.meta.env.DEV) {
@@ -419,7 +460,7 @@ Or strip the calls with terser:
 
 ## Performance
 
-- **14.4 KB** minified and gzipped (12.9 KB with brotli). Use `kong.sole.min.js` from a CDN or your bundler. It is one object, so bundlers cannot drop unused helpers yet; splitting it into modules is on the roadmap.
+- **14.4 KB** minified and gzipped (12.9 KB with brotli) for everything. Use `kong.sole.min.js` from a CDN or your bundler. Need less? The [lite build](#load-only-what-you-use) is 3.3 KB and each module can be loaded on its own.
 - **Free when off.** With `kong.enabled = false` every helper returns before doing any work. A call costs about 0.02 microseconds, so you can leave the logs in production code.
 - **Cheap when on.** Styles are built once at load, colors are cached and block letters are cached per character. `kong.ascii('KONG.SOLE')` is about 6x faster than in 0.2 and `kong.gradient()` about 3.5x faster.
 - Calls that print images are the only async ones (`kong.image`), because the browser has to decode the picture to know its size.
@@ -468,12 +509,13 @@ The landing has the same notice in a Privacy dialog (footer link, or `#privacy` 
 - [x] Dark and light themes (`kong.theme`)
 - [x] `object()`, `dir()`, `type()`, `table()`, `snapshot()`, `chart()`, `date()` and `copy()`
 - [x] `tag()`, `once()`, `watch()`, `trace()`, `assert()`, `time()`, `timers()` and `count()`
-- [ ] Split into modules so bundlers can drop what you do not use
+- [x] Split into modules you can load one by one (`kong.sole/core`, `/inspect`...) and a lite build
 - [ ] ANSI colors in Node.js
+- [ ] Named exports that bundlers can tree-shake automatically
 - [x] Published to npm
-- [ ] TypeScript types
-- [ ] Tests and CI
-- [ ] Interactive demo on GitHub Pages
+- [x] TypeScript types
+- [x] Tests and CI (GitHub Actions: build check, types, tests on Node 20 and 22)
+- [x] Interactive demo on GitHub Pages (workflow ready, enable Pages in the repository settings)
 
 Have an idea? [Open an issue](https://github.com/nandovejer/kong.sole/issues)
 
@@ -483,8 +525,8 @@ Contributions are very welcome.
 
 1. Fork the repo
 2. Create a branch: `git checkout -b feat/my-cool-style`
-3. Add your style to `STYLES` (and an icon to `ICON`, if it has one), or a new helper, in [`kong.sole.js`](./kong.sole.js)
-4. Rebuild the minified file with `npm run build` (needs `terser` installed globally or via `npx`)
+3. Add your style to `STYLES` (and an icon to `ICON`, if it has one) in [`src/core.js`](./src/core.js), or a new helper in the module it belongs to (`src/text.js`, `src/inspect.js`...). Add the signature to [`kong.sole.d.ts`](./kong.sole.d.ts)
+4. Run `npm install`, then `npm run build` to regenerate `kong.sole.min.js` and `kong.sole.lite.min.js`, `npm run types` and `npm test`. CI runs the same steps and fails if the built files are out of date
 5. Try it out in [`index.html`](./index.html) (add a recipe to the `RECIPES` list to show it in the playground). Colors of the page come from the LUZ tokens, so use `var(--luz-...)` for neutral surfaces and text instead of new hex values
 6. Open a pull request
 
