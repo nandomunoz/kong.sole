@@ -243,6 +243,8 @@
 </head>
 
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
+  </defs></svg>
   <div class="wrap">
     <div class="bar">
       <a class="logo" href="#top">KONG<span>.SOLE</span></a>
@@ -265,23 +267,14 @@
           <defs>
             <path id="cur" d="M0 0 L0 22 L5.5 17 L9.5 26 L13.5 24 L9.5 15 L17 15Z" />
           </defs>
-          <!-- beam -->
-          <polygon fill="#b4332c" points="366,428 484,428 452,950 40,950" />
-          <polygon fill="#8f2620" points="40,950 235,700 330,950" />
-          <!-- deco tower -->
-          <path fill="#b4332c" d="M425 232 L431 298 H448 V334 H466 V390 H484 V430 H366 V390 H384 V334 H402 V298 H419Z" />
-          <!-- console window silhouette -->
-          <g transform="rotate(-8 370 650)">
-            <rect x="296" y="596" width="150" height="100" rx="8" fill="#ecdcb6" />
-            <rect x="296" y="596" width="150" height="20" rx="8" fill="#d6ba88" />
-            <circle cx="310" cy="606" r="4" fill="#b4332c" /><circle cx="324" cy="606" r="4" fill="#b4332c" /><circle cx="338" cy="606" r="4" fill="#b4332c" />
-            <text x="310" y="672" font-size="42" fill="#b4332c" font-family="Staatliches, Impact, sans-serif">&gt;_</text>
-          </g>
+          <!-- Kong on the tower (printed look: multiply lets the paper show through) -->
+          <image href="assets/kong-tower.webp" x="116" y="270" width="485" height="680" preserveAspectRatio="xMidYMax meet" style="mix-blend-mode:multiply" />
           <!-- flying cursors -->
-          <use href="#cur" fill="#7a1f1a" transform="translate(255 300) rotate(22) scale(1.9)" />
-          <use href="#cur" fill="#7a1f1a" transform="translate(528 440) rotate(-28) scale(1.7)" />
-          <use href="#cur" fill="#7a1f1a" transform="translate(92 548) rotate(42) scale(2.1)" />
+          <use href="#cur" fill="#7a1f1a" transform="translate(610 290) rotate(22) scale(1.9)" />
+          <use href="#cur" fill="#7a1f1a" transform="translate(240 770) rotate(-28) scale(1.7)" />
+          <use href="#cur" fill="#7a1f1a" transform="translate(50 500) rotate(42) scale(2.1)" />
           <!-- black slab -->
+          <g transform="translate(656 922) scale(.85) translate(-656 -922)">
           <path fill="#1f1b18" d="M648 632 L664 672 L656 922 L372 922 L392 748 L560 706 L604 662Z" />
           <g transform="translate(496 906) rotate(-52)">
             <text class="credit" x="0" y="-4" font-size="13" letter-spacing="1">A zero-dependency</text>
@@ -289,27 +282,16 @@
             <text class="credit" x="0" y="-66" font-size="12" letter-spacing="1">From an idea by</text>
             <text class="credit" x="0" y="-92" font-size="22" letter-spacing="1">Nando Muñoz</text>
           </g>
+          </g>
         </svg>
 
         <svg class="art land" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
           <defs><path id="cur2" d="M0 0 L0 22 L5.5 17 L9.5 26 L13.5 24 L9.5 15 L17 15Z" /></defs>
-          <!-- beam leaning down-left from the tower -->
-          <polygon fill="#b4332c" points="932,512 1168,512 1100,900 560,900" />
-          <polygon fill="#8f2620" points="560,900 830,660 900,900" />
-          <!-- deco tower (same shape as the portrait one, scaled up) -->
-          <g transform="translate(1050 520) scale(2) translate(-425 -430)">
-            <path fill="#b4332c" d="M425 232 L431 298 H448 V334 H466 V390 H484 V430 H366 V390 H384 V334 H402 V298 H419Z" />
-          </g>
-          <!-- console window silhouette -->
-          <g transform="rotate(-8 1005 710)">
-            <rect x="900" y="640" width="210" height="140" rx="12" fill="#ecdcb6" />
-            <rect x="900" y="640" width="210" height="28" rx="12" fill="#d6ba88" />
-            <circle cx="920" cy="654" r="5.5" fill="#b4332c" /><circle cx="940" cy="654" r="5.5" fill="#b4332c" /><circle cx="960" cy="654" r="5.5" fill="#b4332c" />
-            <text x="920" y="742" font-size="60" fill="#b4332c" font-family="Staatliches, Impact, sans-serif">&gt;_</text>
-          </g>
+          <!-- Kong on the tower (printed look: multiply lets the paper show through) -->
+          <image href="assets/kong-tower.webp" x="671" y="20" width="627" height="880" preserveAspectRatio="xMidYMax meet" style="mix-blend-mode:multiply" />
           <!-- flying cursors -->
-          <use href="#cur2" fill="#7a1f1a" transform="translate(690 250) rotate(22) scale(2.6)" />
-          <use href="#cur2" fill="#7a1f1a" transform="translate(1215 330) rotate(-28) scale(2.3)" />
+          <use href="#cur2" fill="#7a1f1a" transform="translate(560 250) rotate(22) scale(2.6)" />
+          <use href="#cur2" fill="#7a1f1a" transform="translate(700 620) rotate(-28) scale(2.3)" />
           <use href="#cur2" fill="#7a1f1a" transform="translate(440 820) rotate(42) scale(2.8)" />
           <!-- black slab with the credits -->
           <path fill="#1f1b18" d="M1480 548 L1508 604 L1500 872 L1180 872 L1204 690 L1370 640 L1420 580Z" />
