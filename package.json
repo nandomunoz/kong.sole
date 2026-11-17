@@ -1,7 +1,7 @@
 {
   "name": "kong.sole",
-  "version": "0.3.0",
-  "description": "Make your browser console look good: kong.error(), SVG, base64 images, banners, gradients, badges and more. Zero dependencies.",
+  "version": "0.4.0",
+  "description": "Make your browser console look good: kong.error(), inspect objects, tables, tags, timers, charts, banners and more. Dark and light aware. Zero dependencies.",
   "type": "module",
   "main": "./kong.sole.js",
   "module": "./kong.sole.js",
@@ -31,15 +31,19 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nandovejer/console.cool.git"
+    "url": "git+https://github.com/nandovejer/kong.sole.git"
   },
-  "homepage": "https://github.com/nandovejer/console.cool#readme",
+  "homepage": "https://github.com/nandovejer/kong.sole#readme",
   "bugs": {
-    "url": "https://github.com/nandovejer/console.cool/issues"
+    "url": "https://github.com/nandovejer/kong.sole/issues"
   },
   "unpkg": "./kong.sole.min.js",
   "jsdelivr": "./kong.sole.min.js",
   "scripts": {
-    "build": "terser kong.sole.js --module --compress passes=2,pure_getters=true,drop_debugger=false --mangle toplevel --format 'preamble=\"/*! kong.sole v0.3.0 | MIT */\"' -o kong.sole.min.js"
+    "build": "terser kong.sole.js --module --compress passes=2,pure_getters=true,drop_debugger=false --mangle toplevel --format 'preamble=\"/*! kong.sole v0.4.0 | MIT */\"' -o kong.sole.min.js",
+    "vendor": "cp node_modules/@luz-ds/tokens/dist/tokens.min.css assets/luz-tokens.min.css && cp node_modules/@luz-ds/tokens/LICENSE assets/LUZ-LICENSE"
+  },
+  "devDependencies": {
+    "@luz-ds/tokens": "0.4.1"
   }
 }
