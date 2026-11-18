@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+      - run: npm ci
+      - name: Build the minified files
+        run: npm run build
+      - name: Built files are committed and up to date
+        run: git diff --exit-code -- kong.sole.min.js kong.sole.lite.min.js
+      - name: Type definitions
+        run: npm run types
+      - name: Tests (source and minified)
+        run: npm test
+      - name: Package contents
+        run: npm pack --dry-run

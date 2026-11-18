@@ -5,15 +5,73 @@
   "type": "module",
   "main": "./kong.sole.js",
   "module": "./kong.sole.js",
+  "types": "./kong.sole.d.ts",
   "exports": {
-    ".": "./kong.sole.js",
-    "./min": "./kong.sole.min.js"
+    ".": {
+      "types": "./kong.sole.d.ts",
+      "default": "./kong.sole.js"
+    },
+    "./min": {
+      "types": "./kong.sole.d.ts",
+      "default": "./kong.sole.min.js"
+    },
+    "./lite": {
+      "types": "./kong.sole.d.ts",
+      "default": "./src/lite.js"
+    },
+    "./lite/min": {
+      "types": "./kong.sole.d.ts",
+      "default": "./kong.sole.lite.min.js"
+    },
+    "./core": {
+      "types": "./kong.sole.d.ts",
+      "default": "./src/core.js"
+    },
+    "./text": {
+      "types": "./kong.sole.d.ts",
+      "default": "./src/text.js"
+    },
+    "./images": {
+      "types": "./kong.sole.d.ts",
+      "default": "./src/images.js"
+    },
+    "./banners": {
+      "types": "./kong.sole.d.ts",
+      "default": "./src/banners.js"
+    },
+    "./say": {
+      "types": "./kong.sole.d.ts",
+      "default": "./src/say.js"
+    },
+    "./panels": {
+      "types": "./kong.sole.d.ts",
+      "default": "./src/panels.js"
+    },
+    "./helpers": {
+      "types": "./kong.sole.d.ts",
+      "default": "./src/helpers.js"
+    },
+    "./inspect": {
+      "types": "./kong.sole.d.ts",
+      "default": "./src/inspect.js"
+    },
+    "./debug": {
+      "types": "./kong.sole.d.ts",
+      "default": "./src/debug.js"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "kong.sole.js",
-    "kong.sole.min.js"
+    "kong.sole.min.js",
+    "kong.sole.lite.min.js",
+    "kong.sole.d.ts",
+    "src"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "./kong.sole.js",
+    "./src/*.js"
+  ],
   "keywords": [
     "console",
     "kong",
@@ -31,19 +89,26 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nandovejer/kong.sole.git"
+    "url": "git+https://github.com/nandomunoz/kong.sole.git"
   },
-  "homepage": "https://github.com/nandovejer/kong.sole#readme",
+  "homepage": "https://github.com/nandomunoz/kong.sole#readme",
   "bugs": {
-    "url": "https://github.com/nandovejer/kong.sole/issues"
+    "url": "https://github.com/nandomunoz/kong.sole/issues"
   },
   "unpkg": "./kong.sole.min.js",
   "jsdelivr": "./kong.sole.min.js",
   "scripts": {
-    "build": "terser kong.sole.js --module --compress passes=2,pure_getters=true,drop_debugger=false --mangle toplevel --format 'preamble=\"/*! kong.sole v0.4.0 | MIT */\"' -o kong.sole.min.js",
-    "vendor": "cp node_modules/@luz-ds/tokens/dist/tokens.min.css assets/luz-tokens.min.css && cp node_modules/@luz-ds/tokens/LICENSE assets/LUZ-LICENSE"
+    "build": "node scripts/build.mjs",
+    "test": "node --test",
+    "vendor": "cp node_modules/@luz-ds/tokens/dist/tokens.min.css assets/luz-tokens.min.css && cp node_modules/@luz-ds/tokens/LICENSE assets/LUZ-LICENSE",
+    "prepublishOnly": "npm run build && npm test",
+    "types": "tsc -p types-test"
   },
   "devDependencies": {
-    "@luz-ds/tokens": "0.4.1"
+    "@luz-ds/tokens": "0.4.1",
+    "@types/node": "^26.6.6",
+    "esbuild": "^0.28.2",
+    "terser": "^5.51.2",
+    "typescript": "^7.0.2"
   }
 }
