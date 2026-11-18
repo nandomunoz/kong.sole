@@ -140,7 +140,7 @@ Sizes are for that import alone: each one already includes the modules it depend
 
 ## Demo
 
-The landing page ([`index.html`](./index.html)) is a live playground, also at <https://nandovejer.github.io/kong.sole/> once GitHub Pages is on for the repository: pick a recipe, press **Run** and the output shows up in a console panel on the page and in your real DevTools.
+The landing page ([`index.html`](./index.html)) is a live playground, also at <https://nandomunoz.github.io/kong.sole/> once GitHub Pages is on for the repository: pick a recipe, press **Run** and the output shows up in a console panel on the page and in your real DevTools.
 
 ```sh
 git clone https://github.com/nandomunoz/kong.sole.git
