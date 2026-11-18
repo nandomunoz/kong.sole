@@ -89,11 +89,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nandovejer/kong.sole.git"
+    "url": "git+https://github.com/nandomunoz/kong.sole.git"
   },
-  "homepage": "https://github.com/nandovejer/kong.sole#readme",
+  "homepage": "https://github.com/nandomunoz/kong.sole#readme",
   "bugs": {
-    "url": "https://github.com/nandovejer/kong.sole/issues"
+    "url": "https://github.com/nandomunoz/kong.sole/issues"
   },
   "unpkg": "./kong.sole.min.js",
   "jsdelivr": "./kong.sole.min.js",

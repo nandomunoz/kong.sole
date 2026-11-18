@@ -9,7 +9,7 @@
 
 [![npm](https://img.shields.io/npm/v/kong.sole?style=flat-square&color=E21143)](https://www.npmjs.com/package/kong.sole)
 [![jsDelivr](https://img.shields.io/jsdelivr/npm/hm/kong.sole?style=flat-square&color=282828)](https://www.jsdelivr.com/package/npm/kong.sole)
-[![CI](https://github.com/nandovejer/kong.sole/actions/workflows/ci.yml/badge.svg)](https://github.com/nandovejer/kong.sole/actions/workflows/ci.yml)
+[![CI](https://github.com/nandomunoz/kong.sole/actions/workflows/ci.yml/badge.svg)](https://github.com/nandomunoz/kong.sole/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/license-MIT-E21143?style=flat-square)](./LICENSE)
 ![Zero dependencies](https://img.shields.io/badge/dependencies-0-FFB03A?style=flat-square)
 ![ES Module](https://img.shields.io/badge/ES-module-282828?style=flat-square)
@@ -143,14 +143,14 @@ Sizes are for that import alone: each one already includes the modules it depend
 The landing page ([`index.html`](./index.html)) is a live playground, also at <https://nandovejer.github.io/kong.sole/> once GitHub Pages is on for the repository: pick a recipe, press **Run** and the output shows up in a console panel on the page and in your real DevTools.
 
 ```sh
-git clone https://github.com/nandovejer/kong.sole.git
+git clone https://github.com/nandomunoz/kong.sole.git
 cd kong.sole
 python3 -m http.server 8000   # any static server works
 ```
 
 Then open <http://localhost:8000> and press <kbd>F12</kbd>.
 
-The page takes its surfaces, text colors, dividers, focus ring and spacing from the design tokens of [LUZ](https://github.com/nandovejer/luz) (`@luz-ds/tokens`, only the tokens, no components or fonts). They follow the light, dark and high contrast modes, and the Theme button on the page sets the same `data-theme` attribute. The tokens are a **dev dependency of the landing only**: the published `kong.sole` package has no dependencies. The CSS is vendored in `assets/luz-tokens.min.css` (MIT, see `assets/LUZ-LICENSE`); run `npm install` and `npm run vendor` to refresh it.
+The page takes its surfaces, text colors, dividers, focus ring and spacing from the design tokens of [LUZ](https://github.com/nandomunoz/luz) (`@luz-ds/tokens`, only the tokens, no components or fonts). They follow the light, dark and high contrast modes, and the Theme button on the page sets the same `data-theme` attribute. The tokens are a **dev dependency of the landing only**: the published `kong.sole` package has no dependencies. The CSS is vendored in `assets/luz-tokens.min.css` (MIT, see `assets/LUZ-LICENSE`); run `npm install` and `npm run vendor` to refresh it.
 
 > [!NOTE]
 > A static server is needed because the page loads `kong.sole.min.js` as an ES module, which browsers block on `file://`.
@@ -325,7 +325,7 @@ kong.dir(user, { filter: 'name', type: 'string' }); // walks the prototype chain
 kong.type(user.roles, 'roles');                     // prints the precise type and returns it: "array"
 ```
 
-`kong.type()` uses the same subtype names as [js-subtype](https://github.com/nandovejer/js-subtype) (`integer`, `float`, `array`, `date`, `map`, `set`, `promise`...). It is built in, so there is no dependency to install. Class instances return their class name and `NaN` returns `nan`.
+`kong.type()` uses the same subtype names as [js-subtype](https://github.com/nandomunoz/js-subtype) (`integer`, `float`, `array`, `date`, `map`, `set`, `promise`...). It is built in, so there is no dependency to install. Class instances return their class name and `NaN` returns `nan`.
 
 ```js
 kong.table(orders);                              // nested objects become columns: customer.name, customer.tier
@@ -485,7 +485,7 @@ Styling relies on the `%c` directive of the browser console.
 
 Firefox is detected from its user agent: it lays out console lines differently and cuts tall images (charts, cards, banners) to one row, so there the image box gets a fixed height. Chrome and Edge keep the original method.
 
-Each browser supports a different set of CSS properties inside the console, so logs can look a little different from one to another. Please [open an issue](https://github.com/nandovejer/kong.sole/issues) if something looks off.
+Each browser supports a different set of CSS properties inside the console, so logs can look a little different from one to another. Please [open an issue](https://github.com/nandomunoz/kong.sole/issues) if something looks off.
 
 ## Privacy
 
@@ -517,7 +517,7 @@ The landing has the same notice in a Privacy dialog (footer link, or `#privacy` 
 - [x] Tests and CI (GitHub Actions: build check, types, tests on Node 20 and 22)
 - [x] Interactive demo on GitHub Pages (workflow ready, enable Pages in the repository settings)
 
-Have an idea? [Open an issue](https://github.com/nandovejer/kong.sole/issues)
+Have an idea? [Open an issue](https://github.com/nandomunoz/kong.sole/issues)
 
 ## Contributing
 
